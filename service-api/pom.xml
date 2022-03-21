@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>austin</artifactId>
+        <groupId>org.mura</groupId>
+        <version>0.0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+<!--    根据3y所说，这个模块是用来设置一些调用服务的接口的-->
+<!--    一般向外提供就提供这个模块而不提供service-api-impl模块-->
+    <artifactId>service-api</artifactId>
+
+</project>

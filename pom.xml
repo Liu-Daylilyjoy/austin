@@ -11,6 +11,10 @@
     <name>austin</name>
     <modules>
         <module>web</module>
+        <module>common</module>
+        <module>service-api</module>
+        <module>service-api-impl</module>
+        <module>support</module>
     </modules>
 
 <!--    springboot项目-->

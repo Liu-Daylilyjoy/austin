@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-api-impl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/support/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/src/main/java" charset="UTF-8" />
   </component>
 </project>
