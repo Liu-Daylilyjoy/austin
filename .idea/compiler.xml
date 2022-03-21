@@ -7,21 +7,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="service-api-impl" />
-        <module name="common" />
-        <module name="web" />
-        <module name="support" />
-        <module name="service-api" />
+        <module name="austin-service-api" />
+        <module name="austin-service-api-impl" />
+        <module name="austin-support" />
+        <module name="austin-web" />
+        <module name="austin-common" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="common" options="-parameters" />
-      <module name="service-api" options="-parameters" />
-      <module name="service-api-impl" options="-parameters" />
-      <module name="support" options="-parameters" />
-      <module name="web" options="-parameters" />
+      <module name="austin-common" options="-parameters" />
+      <module name="austin-service-api" options="-parameters" />
+      <module name="austin-service-api-impl" options="-parameters" />
+      <module name="austin-support" options="-parameters" />
+      <module name="austin-web" options="-parameters" />
     </option>
   </component>
 </project>

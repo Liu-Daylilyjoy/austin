@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-<!--    service-api的实现，不同的项目也许有不同的实现，这是austin的api实现-->
-    <artifactId>service-api-impl</artifactId>
+<!--    根据3y说的，这个模块是用来存放pojo和枚举的-->
+    <artifactId>austin-common</artifactId>
 
 </project>

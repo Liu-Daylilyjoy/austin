@@ -9,15 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-<!--    按照我自己的理解，support是拓展功能模块-->
-    <artifactId>support</artifactId>
-
-    <dependencies>
-        <!--mysql驱动包-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-    </dependencies>
+<!--    根据3y所说，这个模块是用来设置一些调用服务的接口的-->
+<!--    一般向外提供就提供这个模块而不提供service-api-impl模块-->
+    <artifactId>austin-service-api</artifactId>
 
 </project>

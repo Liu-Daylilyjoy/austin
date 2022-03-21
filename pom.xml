@@ -10,11 +10,11 @@
     <version>0.0.1</version>
     <name>austin</name>
     <modules>
-        <module>web</module>
-        <module>common</module>
-        <module>service-api</module>
-        <module>service-api-impl</module>
-        <module>support</module>
+        <module>austin-web</module>
+        <module>austin-common</module>
+        <module>austin-service-api</module>
+        <module>austin-service-api-impl</module>
+        <module>austin-support</module>
     </modules>
 
 <!--    springboot项目-->
