@@ -4,7 +4,7 @@
 
     <contextName>austin</contextName>
 
-    <!-- 设置日志输出路径  可以使“${}”来使用变量。TODO 后续会改成读配置文件 -->
+    <!-- 设置日志输出路径  可以使“${}”来使用变量-->
     <property name="log.path" value="logs"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -44,8 +44,8 @@
         </filter>
     </appender>
 
-    <!-- 时间滚动输出 level为 ERROR 日志 -->
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 时间滚动输出 level为 ERROR 日志，原本使用ERROR_FILE做名称，但是会报错 -->
+    <appender name="ERR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
         <file>${log.path}/austin-error.log</file>
         <!--日志文件输出格式-->
@@ -71,15 +71,11 @@
     </appender>
 
     <root level="info">
-        <!-- console打印只针对dev和test环境 -->
-        <springProfile name="dev,test">
-            <appender-ref ref="CONSOLE"/>
-        </springProfile>
+        <appender-ref ref="CONSOLE"/>
 
-        <springProfile name="prod">
+        <springProfile name="dev,test">
             <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="ERR_FILE"/>
         </springProfile>
     </root>
-
 </configuration>

@@ -12,15 +12,14 @@
         <module name="austin-support" />
         <module name="austin-web" />
         <module name="austin-common" />
+        <module name="austin-handler" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="austin-handler" target="8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="austin-common" options="-parameters" />
+      <module name="austin-handler" options="-parameters" />
       <module name="austin-service-api" options="-parameters" />
       <module name="austin-service-api-impl" options="-parameters" />
       <module name="austin-support" options="-parameters" />
