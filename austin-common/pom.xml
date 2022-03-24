@@ -11,5 +11,11 @@
 
 <!--    根据3y说的，这个模块是用来存放pojo和枚举的-->
     <artifactId>austin-common</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

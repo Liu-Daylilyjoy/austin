@@ -15,6 +15,7 @@
         <module>austin-service-api</module>
         <module>austin-service-api-impl</module>
         <module>austin-support</module>
+        <module>austin-handler</module>
     </modules>
 
 <!--    springboot项目-->
@@ -32,6 +33,11 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+<!--    如果你在父工程中引入了依赖，子模块中却要再声明一遍-->
+<!--    可能是由于使用了dependencyManagement的原因-->
+<!--    但是这个是有好处的
+https://blog.csdn.net/weixin_42565135/article/details/89502289
+-->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -55,11 +61,26 @@
                 <version>31.0.1-jre</version>
             </dependency>
 
-<!--            commons工具包-->
+<!--            okhttp库-->
             <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2.2</version>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>4.9.2</version>
+            </dependency>
+
+<!--            fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.78</version>
+            </dependency>
+
+<!--            腾讯sdk（之前就是因为使用接口失败误删了很多代码），
+                接口鉴权太难了，连3y也改用SDK了-->
+            <dependency>
+                <groupId>com.tencentcloudapi</groupId>
+                <artifactId>tencentcloud-sdk-java</artifactId>
+                <version>3.1.390</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
