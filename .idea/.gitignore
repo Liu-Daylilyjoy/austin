@@ -6,3 +6,7 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+
+target/
+.idea/
+austin-handler/src/main/resources/sms.properties
