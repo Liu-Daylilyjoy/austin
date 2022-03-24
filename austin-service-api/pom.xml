@@ -9,8 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-<!--    根据3y所说，这个模块是用来设置一些调用服务的接口的-->
-<!--    一般向外提供就提供这个模块而不提供service-api-impl模块-->
     <artifactId>austin-service-api</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>
