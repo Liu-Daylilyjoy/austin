@@ -7,6 +7,6 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
-target/
+**/target/
 .idea/
 austin-handler/src/main/resources/sms.properties
