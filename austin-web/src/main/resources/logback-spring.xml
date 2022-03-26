@@ -70,12 +70,13 @@
         </filter>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="CONSOLE"/>
-
-        <springProfile name="dev,test">
+<!--    在dev环境下开启终端日志和文件日志-->
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="INFO_FILE"/>
             <appender-ref ref="ERR_FILE"/>
-        </springProfile>
-    </root>
+        </root>
+    </springProfile>
+
 </configuration>
