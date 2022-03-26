@@ -31,11 +31,12 @@ public class AustinApplication {
     }
 
     @GetMapping("/hello")
-    public String hello(@RequestParam("phoneNumber") String phoneNumber) {
+    public String hello(@RequestParam("phoneNumber") String phoneNumber,
+                        @RequestParam("content") String content) {
 //        一开始我有点蒙，后来想到了Lombok的@Builder注解
         SmsParam smsParam = SmsParam.builder()
                 .phones(new HashSet<>(Collections.singletonList(phoneNumber)))
-                .content("123456")
+                .content(content)
                 .build();
 
         return tencentSmsScript.send(smsParam);

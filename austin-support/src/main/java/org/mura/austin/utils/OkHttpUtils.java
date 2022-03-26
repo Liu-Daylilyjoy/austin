@@ -74,7 +74,7 @@ public class OkHttpUtils {
      */
     public String doGet(String url, Map<String, String> params, Map<String,String> headers) {
 //        这里原本是先获取keySet，再由keySet获取value，不如直接获取EntrySet
-        StringBuilder sb = new StringBuilder(url);
+        StringBuilder stringBuilder = new StringBuilder(url);
         if (params != null) {
             Set<Map.Entry<String, String>> entrySet = params.entrySet();
             boolean firstFlag = true;
@@ -82,10 +82,10 @@ public class OkHttpUtils {
             for (Map.Entry<String, String> param : entrySet) {
 //                虽然这里只有一次是if成立的，但是我们也不用优化，可以搜搜CPU分支预测
                 if (firstFlag) {
-                    sb.append("?").append(param.getKey()).append("=").append(param.getValue());
+                    stringBuilder.append("?").append(param.getKey()).append("=").append(param.getValue());
                     firstFlag = false;
                 } else {
-                    sb.append("&").append(param.getKey()).append("=").append(param.getValue());
+                    stringBuilder.append("&").append(param.getKey()).append("=").append(param.getValue());
                 }
             }
         }
@@ -94,9 +94,9 @@ public class OkHttpUtils {
         Request.Builder builder = getBuilderWithHeaders(headers);
 
 //        还剩下url，在这一步添加
-        Request request = builder.url(sb.toString()).build();
+        Request request = builder.url(stringBuilder.toString()).build();
 
-        log.info("do get request and url[{}]", sb);
+        log.info("do get request and url[{}]", stringBuilder);
 
 //        执行request
         return execute(request);

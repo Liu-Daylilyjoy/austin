@@ -1,0 +1,2 @@
+# 1、austin-service-api模块总是被gitignore，虽然我并没有在gitignore文件中指出
+解决：在ignore文件中指定不排除这个文件，我实在不知道我在哪里排除过这个文件。。。
