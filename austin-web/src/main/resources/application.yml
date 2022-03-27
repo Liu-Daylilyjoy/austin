@@ -1,0 +1,21 @@
+#TODO ok http配置信息
+#只要一个application.yml被加载了，所有的bean都可以使用
+ok:
+  http:
+    connect-timeout: 30
+    keep-alive-duration: 300
+    max-idle-connections: 200
+    read-timeout: 30
+    write-timeout: 30
+spring:
+  profiles:
+    active: dev
+  #TODO 数据库配置
+  datasource:
+    url: jdbc:mysql:///austin?useUnicode=true&characterEncoding=UTF-8&timeZone=Shanghai&useSSL=false
+    username: test
+    password: test
+    #mysql8以下使用com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#TODO tomcat / HikariPool(数据库连接池 配置）

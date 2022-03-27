@@ -16,3 +16,18 @@
 2022-03-26 15:52:34.404 [http-nio-8080-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-03-26 15:52:34.404 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2022-03-26 15:52:34.406 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2022-03-26 17:14:48.152 [main] INFO  org.mura.austin.AustinApplication - Starting AustinApplication using Java 17 on 芥川村雨 with PID 21404 (D:\IDEA\Project\austin\austin-web\target\classes started by 我自己 in D:\IDEA\Project\austin)
+2022-03-26 17:14:48.154 [main] INFO  org.mura.austin.AustinApplication - The following profiles are active: dev
+2022-03-26 17:14:49.015 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2022-03-26 17:14:49.026 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2022-03-26 17:14:49.028 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2022-03-26 17:14:49.028 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-03-26 17:14:49.028 [main] INFO  org.apache.catalina.core.AprLifecycleListener - Loaded Apache Tomcat Native library [1.2.31] using APR version [1.7.0].
+2022-03-26 17:14:49.028 [main] INFO  org.apache.catalina.core.AprLifecycleListener - APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2022-03-26 17:14:49.031 [main] INFO  org.apache.catalina.core.AprLifecycleListener - APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2022-03-26 17:14:49.034 [main] INFO  org.apache.catalina.core.AprLifecycleListener - OpenSSL successfully initialized [OpenSSL 1.1.1l  24 Aug 2021]
+2022-03-26 17:14:49.124 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2022-03-26 17:14:49.124 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 916 ms
+2022-03-26 17:14:49.645 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2022-03-26 17:14:49.666 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2022-03-26 17:14:49.675 [main] INFO  org.mura.austin.AustinApplication - Started AustinApplication in 2.081 seconds (JVM running for 3.304)

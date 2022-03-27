@@ -1,5 +1,7 @@
 package org.mura.austin.script;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Throwables;
@@ -10,11 +12,18 @@ import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.sms.v20210111.SmsClient;
 import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
+import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.mura.austin.domain.SmsRecord;
+import org.mura.austin.enumerate.SmsStatus;
 import org.mura.austin.pojo.SmsParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Akutagawa Murasame
@@ -35,7 +44,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @PropertySource(value = {"classpath:/sms.properties"}, encoding = "utf-8")
-public class TencentSmsScript {
+public class TencentSmsScript implements SmsScript {
+    /**
+     * 电话号码位数
+     */
+    private static final Integer PHONE_NUMBER = 11;
+
     /**
      * 服务器地址
      */
@@ -62,36 +76,94 @@ public class TencentSmsScript {
     @Value("${signName}")
     private String signName;
 
-    public String send(SmsParam smsParam) {
+    /**
+     * 发送和消息
+     * @param smsParam 发送短信参数
+     * @return 发送短信记录
+     */
+    @Override
+    public List<SmsRecord> send(SmsParam smsParam) {
         try {
-//            初始化 client
-            Credential cred = new Credential(secretId, secretKey);
-            HttpProfile httpProfile = new HttpProfile();
-            httpProfile.setEndpoint(url);
-            ClientProfile clientProfile = new ClientProfile();
-            clientProfile.setHttpProfile(httpProfile);
-            SmsClient client = new SmsClient(cred, region, clientProfile);
+            SmsClient client = init();
 
-//            组装发送短信参数
-            SendSmsRequest req = new SendSmsRequest();
+            SendSmsRequest request = assembleReq(smsParam);
 
-//            后面本来是new String[smsParam.getPhones().size() - 1]，不知道是什么意思
-            String[] phoneNumberSet1 = smsParam.getPhones().toArray(new String[0]);
-            req.setPhoneNumberSet(phoneNumberSet1);
-            req.setSmsSdkAppId(smsSdkAppId);
-            req.setSignName(signName);
-            req.setTemplateId(templateId);
-            String[] templateParamSet1 = {smsParam.getContent()};
-            req.setTemplateParamSet(templateParamSet1);
-            req.setSessionContext(IdUtil.fastSimpleUUID());
+            SendSmsResponse response = client.SendSms(request);
 
-//            请求，返回结果
-            SendSmsResponse resp = client.SendSms(req);
-            return SendSmsResponse.toJsonString(resp);
+            return assembleSmsRecord(smsParam,response);
 
         } catch (TencentCloudSDKException e) {
-            log.error("send tencent sms fail!{},params:{}", Throwables.getStackTraceAsString(e), JSON.toJSONString(smsParam));
+            log.error("send tencent sms fail!{},params:{}",
+                    Throwables.getStackTraceAsString(e), JSON.toJSONString(smsParam));
             return null;
         }
+    }
+
+    /**
+     * 组装信息记录和返回结果
+     * @param smsParam 信息记录
+     * @param response 返回结果
+     * @return 返回结果列表
+     */
+    private List<SmsRecord> assembleSmsRecord(SmsParam smsParam, SendSmsResponse response) {
+        if (response == null || ArrayUtil.isEmpty(response.getSendStatusSet())) {
+            return null;
+        }
+
+        List<SmsRecord> smsRecordList = new ArrayList<>();
+
+        for (SendStatus sendStatus : response.getSendStatusSet()) {
+//            电话号码是被封装在status的后面的，因此先反转再获取
+            String phone = new StringBuilder(new StringBuilder(sendStatus.getPhoneNumber())
+                    .reverse().substring(0, PHONE_NUMBER)).reverse().toString();
+
+            SmsRecord smsRecord = SmsRecord.builder()
+                    .sendDate(Integer.valueOf(DateUtil.format(new Date(), "yyyyMMdd")))
+                    .messageTemplateId(smsParam.getMessageTemplateId())
+                    .phone(Long.valueOf(phone))
+                    .supplierId(smsParam.getSupplierId())
+                    .supplierName(smsParam.getSupplierName())
+                    .seriesId(sendStatus.getSerialNo())
+                    .chargingNum(Math.toIntExact(sendStatus.getFee()))
+                    .status(SmsStatus.SEND_SUCCESS.getCode())
+                    .reportContent(sendStatus.getCode())
+                    .created(Math.toIntExact(DateUtil.currentSeconds()))
+                    .updated(Math.toIntExact(DateUtil.currentSeconds()))
+                    .build();
+
+            smsRecordList.add(smsRecord);
+        }
+
+        return smsRecordList;
+    }
+
+    /**
+     * 组装发送短信参数
+     */
+    private SendSmsRequest assembleReq(SmsParam smsParam) {
+        SendSmsRequest req = new SendSmsRequest();
+        String[] phoneNumberSet1 = smsParam.getPhones().toArray(new String[0]);
+        req.setPhoneNumberSet(phoneNumberSet1);
+        req.setSmsSdkAppId(smsSdkAppId);
+        req.setSignName(signName);
+        req.setTemplateId(templateId);
+        String[] templateParamSet1 = {smsParam.getContent()};
+
+//        可惜我们的短信验证码只有一个参数，😂
+        req.setTemplateParamSet(templateParamSet1);
+        req.setSessionContext(IdUtil.fastSimpleUUID());
+        return req;
+    }
+
+    /**
+     * 初始化 client
+     */
+    private SmsClient init() {
+        Credential cred = new Credential(secretId, secretKey);
+        HttpProfile httpProfile = new HttpProfile();
+        httpProfile.setEndpoint(url);
+        ClientProfile clientProfile = new ClientProfile();
+        clientProfile.setHttpProfile(httpProfile);
+        return new SmsClient(cred, region, clientProfile);
     }
 }
