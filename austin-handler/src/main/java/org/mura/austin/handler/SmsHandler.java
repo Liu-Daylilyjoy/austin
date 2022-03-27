@@ -1,7 +1,7 @@
 package org.mura.austin.handler;
 
 import cn.hutool.core.collection.CollUtil;
-import org.mura.austin.dao.SmsRecordDao;
+import org.mura.austin.service.SmsRecordService;
 import org.mura.austin.domain.SmsRecord;
 import org.mura.austin.pojo.SmsParam;
 import org.mura.austin.pojo.TaskInfo;
@@ -19,11 +19,11 @@ import java.util.List;
  */
 @Component
 public class SmsHandler implements Handler {
-    private SmsRecordDao smsRecordDao;
+    private SmsRecordService smsRecordService;
 
     @Autowired
-    public void setSmsRecordDao(SmsRecordDao smsRecordDao) {
-        this.smsRecordDao = smsRecordDao;
+    public void setSmsRecordDao(SmsRecordService smsRecordService) {
+        this.smsRecordService = smsRecordService;
     }
 
     private SmsScript smsScript;
@@ -45,7 +45,7 @@ public class SmsHandler implements Handler {
         List<SmsRecord> recordList = smsScript.send(smsParam);
 
         if (CollUtil.isNotEmpty(recordList)) {
-            smsRecordDao.saveBatch(recordList);
+            smsRecordService.saveBatch(recordList);
 
             return true;
         }

@@ -1,6 +1,6 @@
 package org.mura.austin.controller;
 
-import org.mura.austin.dao.SmsRecordDao;
+import org.mura.austin.service.SmsRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 //@RestController
 public class SmsRecordController {
-    private SmsRecordDao smsRecordDao;
+    private SmsRecordService smsRecordService;
 
     @Autowired
-    public void setSmsRecordDao(SmsRecordDao smsRecordDao) {
-        this.smsRecordDao = smsRecordDao;
+    public void setSmsRecordDao(SmsRecordService smsRecordService) {
+        this.smsRecordService = smsRecordService;
     }
 
     /**

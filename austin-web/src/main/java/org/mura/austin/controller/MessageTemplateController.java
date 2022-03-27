@@ -2,7 +2,7 @@ package org.mura.austin.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
-import org.mura.austin.dao.MessageTemplateDao;
+import org.mura.austin.service.MessageTemplateService;
 import org.mura.austin.domain.MessageTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class MessageTemplateController {
-    private MessageTemplateDao messageTemplateDao;
+    private MessageTemplateService messageTemplateService;
 
     @Autowired
-    public void setMessageTemplateDao(MessageTemplateDao messageTemplateDao) {
-        this.messageTemplateDao = messageTemplateDao;
+    public void setMessageTemplateDao(MessageTemplateService messageTemplateService) {
+        this.messageTemplateService = messageTemplateService;
     }
 
     /**
@@ -52,7 +52,7 @@ public class MessageTemplateController {
                 .isNightShield(0)
                 .build();
 
-        messageTemplateDao.save(messageTemplate);
+        messageTemplateService.save(messageTemplate);
 
         return JSON.toJSONString(JSON.toJSONString(messageTemplate));
     }
@@ -62,7 +62,7 @@ public class MessageTemplateController {
      */
     @GetMapping("/query")
     public String query() {
-        Iterable<MessageTemplate> all = messageTemplateDao.list();
+        Iterable<MessageTemplate> all = messageTemplateService.list();
 
         return JSON.toJSONString(all);
     }

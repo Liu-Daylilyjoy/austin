@@ -123,6 +123,7 @@ public class TencentSmsScript implements SmsScript {
                     .phone(Long.valueOf(phone))
                     .supplierId(smsParam.getSupplierId())
                     .supplierName(smsParam.getSupplierName())
+                    .msgContent(sendStatus.getMessage())  //TODO 这里之后会替换成具体内容
                     .seriesId(sendStatus.getSerialNo())
                     .chargingNum(Math.toIntExact(sendStatus.getFee()))
                     .status(SmsStatus.SEND_SUCCESS.getCode())

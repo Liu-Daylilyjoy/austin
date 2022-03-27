@@ -1,4 +1,4 @@
-package org.mura.austin.dao;
+package org.mura.austin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,6 +10,5 @@ import org.mura.austin.domain.MessageTemplate;
  *
  * 操作消息模板数据库的dao
  */
-@Mapper
-public interface MessageTemplateDao extends IService<MessageTemplate> {
+public interface MessageTemplateService extends IService<MessageTemplate> {
 }

@@ -1,5 +1,7 @@
 package org.mura.austin.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class SmsRecord {
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -40,6 +43,11 @@ public class SmsRecord {
      * 渠道商名字
      */
     private String supplierName;
+
+    /**
+     * 短信内容
+     */
+    private String msgContent;
 
     /**
      * 批次号Id

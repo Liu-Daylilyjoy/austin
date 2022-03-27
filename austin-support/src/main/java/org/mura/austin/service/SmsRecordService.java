@@ -1,4 +1,4 @@
-package org.mura.austin.dao;
+package org.mura.austin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,6 +10,5 @@ import org.mura.austin.domain.SmsRecord;
  *
  * 操作短信记录的dao
  */
-@Mapper
-public interface SmsRecordDao extends IService<SmsRecord> {
+public interface SmsRecordService extends IService<SmsRecord> {
 }
