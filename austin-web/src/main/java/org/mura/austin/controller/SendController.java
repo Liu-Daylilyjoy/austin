@@ -29,6 +29,8 @@ public class SendController {
      *
      * @param phone 手机号
      * @return 是否发送成功
+     *
+     * 现在messageTemplateId参数没有用
      */
     @GetMapping("/sendSms")
     public boolean sendSms(String phone,String content,Long messageTemplateId ) {
