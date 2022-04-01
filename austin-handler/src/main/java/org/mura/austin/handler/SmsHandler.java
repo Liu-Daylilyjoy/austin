@@ -44,12 +44,12 @@ public class SmsHandler implements Handler {
 
         List<SmsRecord> recordList = smsScript.send(smsParam);
 
-        if (CollUtil.isNotEmpty(recordList)) {
-            smsRecordService.saveBatch(recordList);
-
-            return true;
+        if (CollUtil.isEmpty(recordList)) {
+            return false;
         }
 
-        return false;
+        smsRecordService.saveBatch(recordList);
+
+        return true;
     }
 }

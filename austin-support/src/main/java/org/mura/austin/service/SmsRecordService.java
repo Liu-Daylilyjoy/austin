@@ -1,7 +1,6 @@
 package org.mura.austin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Mapper;
 import org.mura.austin.domain.SmsRecord;
 
 /**

@@ -1,5 +1,3 @@
-# 这原本居然给了个错的sql脚本。。。
-
 CREATE TABLE `message_template`
 (
     `id`                 bigint(20)                              NOT NULL AUTO_INCREMENT,

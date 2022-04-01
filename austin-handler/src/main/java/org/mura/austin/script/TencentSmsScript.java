@@ -15,7 +15,7 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
 import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.domain.SmsRecord;
-import org.mura.austin.enumerate.SmsStatus;
+import org.mura.austin.constant.SmsStatus;
 import org.mura.austin.pojo.SmsParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

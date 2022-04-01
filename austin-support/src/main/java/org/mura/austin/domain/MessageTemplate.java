@@ -11,7 +11,12 @@ import lombok.NoArgsConstructor;
  * @author Akutagawa Murasame
  * @date 2022/3/27 11:10
  *
- * 消息模板实体类
+ * 消息模板实体类，此消息模板非彼消息模板，这里指的是一切消息的载体
+ *
+ * 3y:
+ * "我们需要让所有的消息都有一个「载体」，这个载体说白了就是模板，
+ * 模板是austin系统的基石（有了模板，才能做业务处理，才能溯源，
+ * 才能数据统计，才能扩展出一整套的建设...）"
  */
 @Data
 @Builder
@@ -30,12 +35,12 @@ public class MessageTemplate {
     private String name;
 
     /**
-     * 审核状态
+     * 审核状态，防止消息的误发
      */
     private Integer auditStatus;
 
     /**
-     * 工单ID（审核模板走工单）
+     * 工单ID（审核模板走工单），防止消息的误发
      */
     private String flowId;
 
@@ -61,6 +66,7 @@ public class MessageTemplate {
 
     /**
      * 消息类型
+     * 分隔不同的消息类型，可以在下发时让不同的类型走不同的通道进行实现消息隔离（营销类的消息即便堵住了，也不会影响到通知类的消息）
      */
     private Integer msgType;
 
@@ -73,6 +79,7 @@ public class MessageTemplate {
 
     /**
      * 消息内容  {$var} 为占位符
+     * 后面会直接存json进去，也支持占位符
      */
     private String msgContent;
 

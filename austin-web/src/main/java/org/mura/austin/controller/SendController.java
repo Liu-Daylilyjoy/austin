@@ -2,6 +2,7 @@ package org.mura.austin.controller;
 
 import org.mura.austin.handler.SmsHandler;
 import org.mura.austin.pojo.TaskInfo;
+import org.mura.austin.pojo.vo.BasicResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,11 +34,14 @@ public class SendController {
      * 现在messageTemplateId参数没有用
      */
     @GetMapping("/sendSms")
-    public boolean sendSms(String phone,String content,Long messageTemplateId ) {
-
+    public BasicResultVo<Void> sendSms(String phone, String content, Long messageTemplateId ) {
         TaskInfo taskInfo = TaskInfo.builder().receiver(new HashSet<>(Collections.singletonList(phone)))
                 .content(content).messageTemplateId(messageTemplateId).build();
 
-        return smsHandler.doHandler(taskInfo);
+        if (smsHandler.doHandler(taskInfo)) {
+            return BasicResultVo.success("发送短信成功");
+        }
+
+        return BasicResultVo.fail();
     }
 }

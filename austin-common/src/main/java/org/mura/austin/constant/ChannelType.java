@@ -1,4 +1,4 @@
-package org.mura.austin.enumerate;
+package org.mura.austin.constant;
 
 /**
  * @author Akutagawa Murasame
