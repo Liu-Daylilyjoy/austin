@@ -12,4 +12,12 @@
 <!--    service-api的实现，不同的项目也许有不同的实现，这是austin的api实现-->
     <artifactId>austin-service-api-impl</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mura</groupId>
+            <artifactId>austin-service-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>

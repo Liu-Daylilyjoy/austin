@@ -12,10 +12,21 @@ spring:
     active: dev
   #TODO 数据库配置
   datasource:
-    url: jdbc:mysql:///austin?useUnicode=true&characterEncoding=UTF-8&timeZone=Shanghai&useSSL=false
-    username: test
-    password: test
+    url: jdbc:mysql://192.168.159.128:3306/austin?useUnicode=true&characterEncoding=UTF-8&timeZone=Shanghai&useSSL=false
+    username: root
+    password: root
     #mysql8以下使用com.mysql.jdbc.Driver
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  #TODO kafka相关的信息配置
+  kafka:
+    bootstrap-servers: "192.168.159.128:9092"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
 
 #TODO tomcat / HikariPool(数据库连接池 配置）
