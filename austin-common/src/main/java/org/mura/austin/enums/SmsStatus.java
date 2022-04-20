@@ -1,4 +1,8 @@
-package org.mura.austin.constant;
+package org.mura.austin.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Akutagawa Murasame
@@ -6,6 +10,9 @@ package org.mura.austin.constant;
  *
  * 短信状态
  */
+@Getter
+@ToString
+@AllArgsConstructor
 public enum SmsStatus {
 //    调用接口发送成功（但用户不一定收到）
     SEND_SUCCESS(10,"send success"),
@@ -20,25 +27,4 @@ public enum SmsStatus {
 
     private Integer code;
     private String description;
-
-    SmsStatus(Integer code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

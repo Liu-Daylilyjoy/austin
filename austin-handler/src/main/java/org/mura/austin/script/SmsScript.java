@@ -1,7 +1,7 @@
 package org.mura.austin.script;
 
 import org.mura.austin.domain.SmsRecord;
-import org.mura.austin.pojo.SmsParam;
+import org.mura.austin.domain.SmsParam;
 
 import java.util.List;
 

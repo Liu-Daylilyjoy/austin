@@ -137,7 +137,7 @@ public class MessageTemplate {
     private Integer deduplicationTime;
 
     /**
-     * 是否夜间屏蔽
+     * 是否在夜里屏蔽
      * 0:不屏蔽
      * 1：屏蔽
      */

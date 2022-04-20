@@ -15,8 +15,8 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
 import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.domain.SmsRecord;
-import org.mura.austin.constant.SmsStatus;
-import org.mura.austin.pojo.SmsParam;
+import org.mura.austin.enums.SmsStatus;
+import org.mura.austin.domain.SmsParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -91,7 +91,7 @@ public class TencentSmsScript implements SmsScript {
 
             return assembleSmsRecord(smsParam,response);
 
-        } catch (TencentCloudSDKException e) {
+        } catch (Exception e) {
             log.error("send tencent sms fail!{},params:{}",
                     Throwables.getStackTraceAsString(e), JSON.toJSONString(smsParam));
             return null;

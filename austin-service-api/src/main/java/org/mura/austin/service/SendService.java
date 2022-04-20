@@ -1,5 +1,6 @@
 package org.mura.austin.service;
 
+import org.mura.austin.domain.BatchSendRequest;
 import org.mura.austin.domain.SendRequest;
 import org.mura.austin.domain.SendResponse;
 
@@ -8,12 +9,12 @@ import org.mura.austin.domain.SendResponse;
  */
 public interface SendService {
     /**
-     * 单次发送
+     * 单文案发送接口
      */
     SendResponse send(SendRequest sendRequest);
 
     /**
-     * 批量发送
+     * 多文案发送接口，一次远程调用处理多个单次发送的请求，避免多次远程调用单次发送的请求
      */
-    SendResponse batchSend(SendRequest sendRequest);
+    SendResponse batchSend(BatchSendRequest batchSendRequest);
 }

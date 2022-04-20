@@ -5,6 +5,6 @@ package org.mura.austin.pipeline;
  *
  * 存储责任链的数据
  */
-public class ProcessModel {
+public interface ProcessModel {
 
 }

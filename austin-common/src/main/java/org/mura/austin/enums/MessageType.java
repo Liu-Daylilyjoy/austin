@@ -1,4 +1,8 @@
-package org.mura.austin.constant;
+package org.mura.austin.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Akutagawa Murasame
@@ -6,6 +10,9 @@ package org.mura.austin.constant;
  *
  * 发送的消息类型
  */
+@Getter
+@ToString
+@AllArgsConstructor
 public enum MessageType {
 //    通知类消息
     NOTICE(10, "notification"),
@@ -23,25 +30,4 @@ public enum MessageType {
 
     private Integer code;
     private String description;
-
-    MessageType(Integer code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

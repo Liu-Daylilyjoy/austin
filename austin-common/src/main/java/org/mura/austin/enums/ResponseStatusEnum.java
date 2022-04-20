@@ -1,4 +1,4 @@
-package org.mura.austin.constant;
+package org.mura.austin.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +23,22 @@ public enum ResponseStatusEnum {
     /**
      * 客户端
      */
-    CLIENT_BAD_PARAMETERS("A0100", "客户端参数错误"),
+    CLIENT_BAD_PARAMETERS("A0001", "客户端参数错误"),
+    TEMPLATE_NOT_FOUND("A0002", "找不到模板或模板已被删除"),
 
     /**
      * 系统
      */
     SERVICE_ERROR("B0001", "服务执行异常"),
     RESOURCE_NOT_FOUND("B0404", "资源不存在"),
+
+    /**
+     * pipeline
+     */
+    CONTEXT_IS_NULL("P0001","流程上下文为空"),
+    BUSINESS_CODE_IS_NULL("P0002","业务代码为空"),
+    PROCESS_TEMPLATE_IS_NULL("P0003","流程模板配置为空"),
+    PROCESS_LIST_IS_NULL("P0004","业务处理器配置为空" ),
     ;
 
     /**

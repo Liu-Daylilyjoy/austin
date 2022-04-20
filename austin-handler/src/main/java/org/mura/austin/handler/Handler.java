@@ -1,6 +1,6 @@
 package org.mura.austin.handler;
 
-import org.mura.austin.pojo.TaskInfo;
+import org.mura.austin.domain.TaskInfo;
 
 /**
  * @author Akutagawa Murasame

@@ -1,10 +1,10 @@
-package org.mura.austin.pojo.vo;
+package org.mura.austin.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.mura.austin.constant.ResponseStatusEnum;
+import org.mura.austin.enums.ResponseStatusEnum;
 
 /**
  * @author Akutagawa Murasame

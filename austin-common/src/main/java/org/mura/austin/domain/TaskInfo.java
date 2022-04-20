@@ -1,7 +1,10 @@
-package org.mura.austin.pojo;
+package org.mura.austin.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.mura.austin.dto.ContentModel;
 
 import java.util.Set;
 
@@ -13,6 +16,8 @@ import java.util.Set;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaskInfo {
     /**
      * 消息模板id
@@ -20,7 +25,7 @@ public class TaskInfo {
     private Long messageTemplateId;
 
     /**
-     * 业务Id
+     * 业务Id(用于数据追踪)
      */
     private Long businessId;
 
@@ -40,7 +45,7 @@ public class TaskInfo {
     private Integer sendChannel;
 
     /**
-     * 模板类型（不知道和消息模板类型有什么区别）
+     * 模板类型
      */
     private Integer templateType;
 
@@ -48,6 +53,15 @@ public class TaskInfo {
      * 消息类型
      */
     private Integer msgType;
+
+    /**
+     * 发送文案模型
+     * 发送文案模型
+     * message_template表存储的content是JSON(所有内容都会塞进去)
+     * 不同的渠道要发送的内容不一样(比如发push会有img，而短信没有)
+     * 所以会有ContentModel
+     */
+    private ContentModel contentModel;
 
     /**
      * 发送文案内容
@@ -65,7 +79,7 @@ public class TaskInfo {
     private Integer deduplicationTime;
 
     /**
-     * 是否夜间屏蔽
+     * 是否在夜里屏蔽消息
      * 0:不屏蔽
      * 1：屏蔽
      */

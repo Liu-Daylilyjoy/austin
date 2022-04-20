@@ -30,3 +30,8 @@ spring:
       auto-offset-reset: earliest
 
 #TODO tomcat / HikariPool(数据库连接池 配置）
+
+#TODO kafka topic配置
+austin:
+  topic:
+    name: austin

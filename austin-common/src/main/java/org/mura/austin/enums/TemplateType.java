@@ -1,4 +1,8 @@
-package org.mura.austin.constant;
+package org.mura.austin.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author Akutagawa Murasame
@@ -9,6 +13,9 @@ package org.mura.austin.constant;
  * 使用短信服务意味着我们发送不同业务的短信就要申请不同类型的模板
  * 于是在这里枚举出所有模板，方便拓展
  */
+@Getter
+@ToString
+@AllArgsConstructor
 public enum TemplateType {
 //    运营部门的模板
     OPERATION(10, "operation template"),
@@ -18,25 +25,4 @@ public enum TemplateType {
 
     private Integer code;
     private String description;
-
-    TemplateType(Integer code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 }

@@ -1,4 +1,4 @@
-package org.mura.austin.pojo;
+package org.mura.austin.domain;
 
 import lombok.Builder;
 import lombok.Data;

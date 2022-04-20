@@ -16,4 +16,12 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mura</groupId>
+            <artifactId>austin-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
 </project>
