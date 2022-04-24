@@ -44,8 +44,7 @@ public enum ChannelType {
     private Class<?> contentModelClass;
 
     public static Class<?> getChannelModelClassByCode(Integer code) {
-        ChannelType[] values = values();
-        for (ChannelType value : values) {
+        for (ChannelType value : values()) {
             if (value.getCode().equals(code)) {
                 return value.getContentModelClass();
             }

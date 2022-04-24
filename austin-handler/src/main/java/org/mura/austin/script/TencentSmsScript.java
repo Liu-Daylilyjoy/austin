@@ -6,7 +6,6 @@ import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Throwables;
 import com.tencentcloudapi.common.Credential;
-import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.sms.v20210111.SmsClient;
@@ -14,9 +13,9 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
 import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.mura.austin.domain.SmsParam;
 import org.mura.austin.domain.SmsRecord;
 import org.mura.austin.enums.SmsStatus;
-import org.mura.austin.domain.SmsParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -122,7 +121,7 @@ public class TencentSmsScript implements SmsScript {
                     .phone(Long.valueOf(phone))
                     .supplierId(smsParam.getSupplierId())
                     .supplierName(smsParam.getSupplierName())
-                    .msgContent(sendStatus.getMessage())  //TODO 这里之后会替换成具体内容
+                    .msgContent(sendStatus.getMessage())
                     .seriesId(sendStatus.getSerialNo())
                     .chargingNum(Math.toIntExact(sendStatus.getFee()))
                     .status(SmsStatus.SEND_SUCCESS.getCode())
@@ -142,15 +141,15 @@ public class TencentSmsScript implements SmsScript {
      */
     private SendSmsRequest assembleReq(SmsParam smsParam) {
         SendSmsRequest req = new SendSmsRequest();
-        String[] phoneNumberSet1 = smsParam.getPhones().toArray(new String[0]);
-        req.setPhoneNumberSet(phoneNumberSet1);
+        String[] phoneNumberSet = smsParam.getPhones().toArray(new String[0]);
+        req.setPhoneNumberSet(phoneNumberSet);
         req.setSmsSdkAppId(smsSdkAppId);
         req.setSignName(signName);
         req.setTemplateId(templateId);
-        String[] templateParamSet1 = {smsParam.getContent()};
+        String[] templateParamSet = {smsParam.getContent()};
 
 //        可惜我们的短信验证码只有一个参数，😂
-        req.setTemplateParamSet(templateParamSet1);
+        req.setTemplateParamSet(templateParamSet);
         req.setSessionContext(IdUtil.fastSimpleUUID());
         return req;
     }

@@ -11,8 +11,6 @@ import org.mura.austin.enums.ResponseStatusEnum;
  * @date 2022/4/1 15:13
  *
  * 基础视图展示对象
- *
- * VO：https://www.cnblogs.com/JerryMouseLi/p/11069237.html
  */
 @Getter
 @ToString(callSuper = true)

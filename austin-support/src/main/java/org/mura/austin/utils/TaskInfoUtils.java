@@ -12,8 +12,7 @@ public class TaskInfoUtils {
 
     /**
      * 生成BusinessId
-     * 模板类型+模板ID（主键）+当天日期
-     * (固定16位，模板ID有6位)
+     * 模板类型 * TYPE_FLAG + 模板ID（主键）+ 当天日期 比如1000000120220424
      */
     public static Long generateBusinessId(Long templateId, Integer templateType) {
         Integer today = Integer.valueOf(DateUtil.format(new Date(), "yyyyMMdd"));

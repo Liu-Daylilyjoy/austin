@@ -12,7 +12,6 @@ import org.mura.austin.vo.BasicResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Akutagawa Murasame
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
  * 将消息发送到MQ
  */
 @Slf4j
-@Component
 public class SendMqAction implements BusinessProcess {
     private KafkaTemplate<String, String> kafkaTemplate;
 

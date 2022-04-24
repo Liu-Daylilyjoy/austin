@@ -40,6 +40,8 @@ public class SmsHandler implements Handler {
         SmsContentModel smsContentModel = (SmsContentModel) taskInfo.getContentModel();
 
         String resultContent;
+
+//        一般ContentModel没有URL，因为短信动态参数位数太少
         if (StrUtil.isNotBlank(smsContentModel.getUrl())) {
             resultContent = smsContentModel.getContent() + " " + smsContentModel.getUrl();
         } else {

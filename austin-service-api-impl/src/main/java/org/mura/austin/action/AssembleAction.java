@@ -21,7 +21,6 @@ import org.mura.austin.utils.ContentHolderUtils;
 import org.mura.austin.utils.TaskInfoUtils;
 import org.mura.austin.vo.BasicResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -34,7 +33,6 @@ import java.util.*;
  * 通过模板ID去查整个模板的内容，然后根据业务入参拼装出自己的TaskInfo（任务消息）
  */
 @Slf4j
-@Component
 public class AssembleAction implements BusinessProcess {
     private MessageTemplateService messageTemplateService;
 
@@ -106,6 +104,7 @@ public class AssembleAction implements BusinessProcess {
         Field[] fields = ReflectUtil.getFields(contentModelClass);
         ContentModel contentModel = (ContentModel) ReflectUtil.newInstance(contentModelClass);
         for (Field field : fields) {
+//            messageTemplate.getMsgContent()中的值是用占位符形式写出的，用variables填充，顺便也填充到目标contentModel中
             String originValue = jsonObject.getString(field.getName());
 
             if (StrUtil.isNotBlank(originValue)) {

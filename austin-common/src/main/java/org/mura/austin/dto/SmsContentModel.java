@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SmsContentModel extends ContentModel{
+public class SmsContentModel extends ContentModel {
     /**
      * 短信发送内容
      */
