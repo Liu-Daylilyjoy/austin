@@ -13,7 +13,7 @@ public class AustinConstant {
     public final static Integer FALSE = 0;
 
     /**
-     * 手机号合理性验证
+     * 时间格式
      */
-    public final static String VALID_PHONE = "^1[3-9]\\d{9}$";
+    public final static String YYYYMMDD = "yyyyMMdd";
 }

@@ -13,6 +13,7 @@ import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
 import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.mura.austin.constant.AustinConstant;
 import org.mura.austin.domain.SmsParam;
 import org.mura.austin.domain.SmsRecord;
 import org.mura.austin.enums.SmsStatus;
@@ -116,7 +117,7 @@ public class TencentSmsScript implements SmsScript {
                     .reverse().substring(0, PHONE_NUMBER)).reverse().toString();
 
             SmsRecord smsRecord = SmsRecord.builder()
-                    .sendDate(Integer.valueOf(DateUtil.format(new Date(), "yyyyMMdd")))
+                    .sendDate(Integer.valueOf(DateUtil.format(new Date(), AustinConstant.YYYYMMDD)))
                     .messageTemplateId(smsParam.getMessageTemplateId())
                     .phone(Long.valueOf(phone))
                     .supplierId(smsParam.getSupplierId())

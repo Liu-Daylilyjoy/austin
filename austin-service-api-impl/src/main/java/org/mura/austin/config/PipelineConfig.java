@@ -1,7 +1,8 @@
 package org.mura.austin.config;
 
 import org.mura.austin.action.AssembleAction;
-import org.mura.austin.action.PreParamAction;
+import org.mura.austin.action.PostParamCheckAction;
+import org.mura.austin.action.PreParamCheckAction;
 import org.mura.austin.action.SendMqAction;
 import org.mura.austin.enums.BusinessCode;
 import org.mura.austin.pipeline.BusinessProcess;
@@ -21,9 +22,10 @@ import java.util.Map;
 public class PipelineConfig {
     /**
      * 普通发送执行流程
-     * 1、参数校验
+     * 1、前置参数校验
      * 2、组装参数
-     * 3、发送消息至MQ
+     * 3、后置参数校验
+     * 4、发送消息至MQ
      */
     @Bean("commonSendTemplate")
     public ProcessTemplate commonSendTemplate() {
@@ -31,8 +33,9 @@ public class PipelineConfig {
         ArrayList<BusinessProcess> businessProcesses = new ArrayList<>();
 
 //        组装流程，形成责任链
-        businessProcesses.add(preParamAction());
+        businessProcesses.add(preParamCheckAction());
         businessProcesses.add(assembleAction());
+        businessProcesses.add(postParamCheckAction());
         businessProcesses.add(sendMqAction());
 
         processTemplate.setProcessList(businessProcesses);
@@ -48,12 +51,19 @@ public class PipelineConfig {
     @Bean
     public ProcessController processController() {
         ProcessController processController = new ProcessController();
-        Map<String, ProcessTemplate> templateConfig = new HashMap<>(16);
+        Map<String, ProcessTemplate> templateConfig = new HashMap<>(4);
         templateConfig.put(BusinessCode.COMMON_SEND.getCode(), commonSendTemplate());
         processController.setTemplateConfig(templateConfig);
         return processController;
     }
 
+    /**
+     * 前置参数校验Action
+     */
+    @Bean
+    public PreParamCheckAction preParamCheckAction() {
+        return new PreParamCheckAction();
+    }
 
     /**
      * 组装参数Action
@@ -64,11 +74,19 @@ public class PipelineConfig {
     }
 
     /**
+     * 后置参数校验Action
+     */
+    @Bean
+    public PostParamCheckAction postParamCheckAction() {
+        return new PostParamCheckAction();
+    }
+
+    /**
      * 参数校验Action
      */
     @Bean
-    public PreParamAction preParamAction() {
-        return new PreParamAction();
+    public PreParamCheckAction preParamAction() {
+        return new PreParamCheckAction();
     }
 
     /**

@@ -27,9 +27,9 @@ spring:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: earliest
-
-#TODO tomcat / HikariPool(数据库连接池 配置）
+      auto-offset-reset: latest
+      enable-auto-commit: true  #消费者的偏移量自动提交
+      auto-commit-interval: 1000  #间隔1000毫秒提交一次
 
 #TODO kafka topic配置
 austin:

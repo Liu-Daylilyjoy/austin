@@ -27,25 +27,23 @@ public class SendController {
         this.sendService = sendService;
     }
 
-
     /**
      * 发短信
      *
      * @param phone 收信手机号
      */
     @GetMapping("/sendSms")
-    public SendResponse sendSms(String phone) {
-//        messageTemplate id 为1 的模板内容
+    public SendResponse sendSms(String phone, Long templateId) {
 //        先执行MessageTemplateController中的接口插入消息模板，才能发送短信（否则会显示找不到MessageTemplate）
+
         // 文案参数
         Map<String, String> variables = new HashMap<>(2);
         variables.put("content", "6666");
 
         MessageParam messageParam = new MessageParam().setReceiver(phone).setVariables(variables);
 
-        // ID为1的消息模板
         SendRequest sendRequest = new SendRequest().setCode(BusinessCode.COMMON_SEND.getCode())
-                .setMessageTemplateId(1L)
+                .setMessageTemplateId(templateId)
                 .setMessageParam(messageParam);
 
         return sendService.send(sendRequest);

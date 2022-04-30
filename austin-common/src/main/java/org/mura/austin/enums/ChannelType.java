@@ -22,31 +22,52 @@ import org.mura.austin.dto.*;
 @AllArgsConstructor
 public enum ChannelType {
 //    站内消息
-    IM(10, "inner message", ImContentModel.class),
+    IM(10, "inner message", ImContentModel.class, "im"),
 
 //    推送通知
-    PUSH(20, "push notification", PushContentModel.class),
+    PUSH(20, "push notification", PushContentModel.class, "push"),
 
 //    短信
-    SMS(30, "short message", SmsContentModel.class),
+    SMS(30, "short message", SmsContentModel.class, "sms"),
 
 //    邮件
-    EMAIL(40, "email", EmailContentModel.class),
+    EMAIL(40, "email", EmailContentModel.class, "email"),
 
 //    服务号
-    OFFICIAL_ACCOUNT(50, "service account", OfficialAccountsContentModel.class),
+    OFFICIAL_ACCOUNT(50, "service account", OfficialAccountsContentModel.class, "official_account"),
 
 //    小程序
-    MINI_PROGRAM(60, "mini program", MiniProgramContentModel.class);
+    MINI_PROGRAM(60, "mini program", MiniProgramContentModel.class, "mini_program");
 
     private Integer code;
     private String description;
     private Class<?> contentModelClass;
 
+    /**
+     * 英文标识
+     */
+    private String codeEn;
+
+    /**
+     * 通过code获取class
+     */
     public static Class<?> getChannelModelClassByCode(Integer code) {
         for (ChannelType value : values()) {
             if (value.getCode().equals(code)) {
                 return value.getContentModelClass();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 通过code获取enum
+     */
+    public static ChannelType getEnumByCode(Integer code) {
+        for (ChannelType value : values()) {
+            if (value.getCode().equals(code)) {
+                return value;
             }
         }
 

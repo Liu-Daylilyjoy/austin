@@ -41,7 +41,8 @@ public class SendMqAction implements BusinessProcess {
         } catch (Exception e) {
             context.setNeedBreak(true).setResponse(BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR));
 
-            log.error("send kafka fail! e:{}", Throwables.getStackTraceAsString(e));
+            log.error("send kafka fail! e:{}, params:{}", Throwables.getStackTraceAsString(e),
+                    JSON.toJSONString(sendTaskModel.getTaskInfo().get(0)));
         }
     }
 }

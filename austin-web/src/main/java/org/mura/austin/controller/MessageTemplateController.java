@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Akutagawa Murasame
  * @date 2022/3/27 13:21
@@ -28,8 +31,12 @@ public class MessageTemplateController {
      */
     @GetMapping("/insert")
     public String insert() {
-        MessageTemplate messageTemplate = MessageTemplate.builder()
-                .name("test短信")
+        List<MessageTemplate> list = new ArrayList<>();
+
+//        用户短信
+        list.add(MessageTemplate.builder()
+                .id(1L)
+                .name("用户短信")
                 .auditStatus(10)
                 .flowId("yyyy")
                 .msgStatus(10)
@@ -38,7 +45,7 @@ public class MessageTemplateController {
                 .templateType(10)
                 .msgType(10)
                 .expectPushTime("0")
-                .msgContent("{content:\"{$content}\"}")
+                .msgContent("{\"content\":\"{$content}\"}")
                 .sendAccount(66)
                 .creator("yyyyc")
                 .updator("yyyyu")
@@ -50,11 +57,41 @@ public class MessageTemplateController {
                 .updated(Math.toIntExact(DateUtil.currentSeconds()))
                 .deduplicationTime(1)
                 .isNightShield(0)
-                .build();
+                .build());
 
-        messageTemplateService.save(messageTemplate);
+//        营销短信
+//        新增：auditStatus，expectPushTime
+        list.add(MessageTemplate.builder()
+                .id(2L)
+                .idType(30)
+                .auditStatus(10)
+                .name("营销短信")
+                .auditStatus(10)
+                .flowId("mura")
+                .msgStatus(10)
+                .idType(10)
+                .sendChannel(30)
+                .templateType(10)
+                .msgType(20)
+                .expectPushTime("0")
+                .msgContent("{content:\"{$content}\"}")
+                .sendAccount(66)
+                .creator("murasame_c")
+                .updator("murasame_u")
+                .team("murasame_t")
+                .proposer("2233")
+                .auditor("murasame_z")
+                .isDeleted(0)
+                .created(Math.toIntExact(DateUtil.currentSeconds()))
+                .updated(Math.toIntExact(DateUtil.currentSeconds()))
+                .expectPushTime("0")
+                .deduplicationTime(1)
+                .isNightShield(0)
+                .build());
 
-        return JSON.toJSONString(JSON.toJSONString(messageTemplate));
+        messageTemplateService.saveBatch(list);
+
+        return JSON.toJSONString(JSON.toJSONString(list));
     }
 
     /**

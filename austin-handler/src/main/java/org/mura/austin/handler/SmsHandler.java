@@ -20,7 +20,7 @@ import java.util.List;
  * 短信Handler
  */
 @Component
-public class SmsHandler implements Handler {
+public class SmsHandler extends Handler {
     private SmsRecordService smsRecordService;
 
     @Autowired
@@ -36,33 +36,31 @@ public class SmsHandler implements Handler {
     }
 
     @Override
-    public boolean doHandler(TaskInfo taskInfo) {
-        SmsContentModel smsContentModel = (SmsContentModel) taskInfo.getContentModel();
-
-        String resultContent;
-
-//        一般ContentModel没有URL，因为短信动态参数位数太少
-        if (StrUtil.isNotBlank(smsContentModel.getUrl())) {
-            resultContent = smsContentModel.getContent() + " " + smsContentModel.getUrl();
-        } else {
-            resultContent = smsContentModel.getContent();
-        }
-
+    public void handle(TaskInfo taskInfo) {
         SmsParam smsParam = SmsParam.builder()
                 .phones(taskInfo.getReceiver())
-                .content(resultContent)
+                .content(getSmsContent(taskInfo))
                 .messageTemplateId(taskInfo.getMessageTemplateId())
                 .supplierId(10)
                 .supplierName("腾讯云通知类消息渠道").build();
 
         List<SmsRecord> recordList = smsScript.send(smsParam);
 
-        if (CollUtil.isEmpty(recordList)) {
-            return false;
+        if (!CollUtil.isEmpty(recordList)) {
+            smsRecordService.saveBatch(recordList);
         }
+    }
 
-        smsRecordService.saveBatch(recordList);
+    /**
+     * 如果输入有链接，则把链接接在文案后，不过一般验证码类的短信没有url（动态参数不支持链接）
+     */
+    private String getSmsContent(TaskInfo taskInfo) {
+        SmsContentModel smsContentModel = (SmsContentModel) taskInfo.getContentModel();
 
-        return true;
+        if (StrUtil.isNotBlank(smsContentModel.getUrl())) {
+            return smsContentModel.getContent() + " " + smsContentModel.getUrl();
+        } else {
+            return smsContentModel.getContent();
+        }
     }
 }

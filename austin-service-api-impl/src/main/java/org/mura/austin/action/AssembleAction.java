@@ -64,7 +64,7 @@ public class AssembleAction implements BusinessProcess {
     }
 
     /**
-     * 组装 TaskInfo 任务消息
+     * 组装 TaskInfo 任务消息，将用户参数和model参数组装成TaskInfo
      */
     private List<TaskInfo> assembleTaskInfo(SendTaskModel sendTaskModel, MessageTemplate messageTemplate) {
         List<MessageParam> messageParamList = sendTaskModel.getMessageParamList();
@@ -100,7 +100,7 @@ public class AssembleAction implements BusinessProcess {
         JSONObject jsonObject = JSON.parseObject(messageTemplate.getMsgContent());
         Class<?> contentModelClass = ChannelType.getChannelModelClassByCode(sendChannel);
 
-//        反射获取得到不同的渠道对应的值
+//        反射获取得到不同的渠道对应的ContentModel
         Field[] fields = ReflectUtil.getFields(contentModelClass);
         ContentModel contentModel = (ContentModel) ReflectUtil.newInstance(contentModelClass);
         for (Field field : fields) {
