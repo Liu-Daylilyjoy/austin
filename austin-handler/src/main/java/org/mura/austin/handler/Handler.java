@@ -1,7 +1,6 @@
 package org.mura.austin.handler;
 
 import org.mura.austin.domain.TaskInfo;
-import org.mura.austin.enums.ChannelType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +12,12 @@ import javax.annotation.PostConstruct;
  * 做处理，具体做什么处理由具体的消息Handler实现
  */
 public abstract class Handler {
+    /**
+     * 标识渠道的Code
+     * 子类初始化的时候指定
+     */
+    protected Integer channelCode;
+
     private HandlerHolder handlerHolder;
 
     @Autowired
@@ -25,10 +30,7 @@ public abstract class Handler {
      */
     @PostConstruct
     private void init() {
-        for (ChannelType channelType : ChannelType.values()) {
-            //#TODO 没写完，默认所有渠道都由this处理
-            handlerHolder.putHandler(channelType.getCode(), this);
-        }
+        handlerHolder.putHandler(channelCode, this);
     }
 
     /**

@@ -44,6 +44,8 @@ public class Receiver {
 
     /**
      * `@Header(KafkaHeaders.GROUP+ID)注解会将kafka消息中的kafka_groupId赋值给topicGroupId
+     *
+     * ${}读取配置文件中的值，加上#{''}可以保证读出的值是字符串
      */
     @KafkaListener(topics = "#{'${austin.topic.name}'}")
     public void consume(ConsumerRecord<?, String> consumerRecord, @Header(KafkaHeaders.GROUP_ID) String topicGroupId) {
@@ -58,6 +60,8 @@ public class Receiver {
             if (topicGroupId.equals(messageGroupId)) {
                 for (TaskInfo taskInfo : taskInfos) {
                     Task task = context.getBean(Task.class).setTaskInfo(taskInfo);
+
+//                    #TODO 将获取到的消息交给线程池去处理，实现缓存，可能会出现服务器关闭导致任务丢失的情况
                     taskPendingHolder.route(topicGroupId).execute(task);
                 }
             }

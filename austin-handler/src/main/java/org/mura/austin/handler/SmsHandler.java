@@ -2,12 +2,13 @@ package org.mura.austin.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.dto.SmsContentModel;
-import org.mura.austin.service.SmsRecordService;
+import org.mura.austin.enums.ChannelType;
 import org.mura.austin.domain.SmsRecord;
 import org.mura.austin.domain.SmsParam;
-import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.script.SmsScript;
+import org.mura.austin.service.SmsRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,10 @@ import java.util.List;
  */
 @Component
 public class SmsHandler extends Handler {
+    public SmsHandler() {
+        channelCode = ChannelType.SMS.getCode();
+    }
+
     private SmsRecordService smsRecordService;
 
     @Autowired

@@ -16,7 +16,6 @@
         <module>austin-service-api-impl</module>
         <module>austin-support</module>
         <module>austin-handler</module>
-        <module>austin-test</module>
     </modules>
 
 <!--    springboot项目-->

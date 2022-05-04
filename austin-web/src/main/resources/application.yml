@@ -12,7 +12,7 @@ spring:
     active: dev
   #TODO 数据库配置
   datasource:
-    url: jdbc:mysql://192.168.159.128:3306/austin?useUnicode=true&characterEncoding=UTF-8&timeZone=Shanghai&useSSL=false
+    url: jdbc:mysql://192.168.159.128:3306/austin?useUnicode=true&characterEncoding=UTF-8&timeZone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: root
     #mysql8以下使用com.mysql.jdbc.Driver
@@ -30,6 +30,12 @@ spring:
       auto-offset-reset: latest
       enable-auto-commit: true  #消费者的偏移量自动提交
       auto-commit-interval: 1000  #间隔1000毫秒提交一次
+
+  #TODO redis相关配置
+  redis:
+    host: "192.168.159.128"
+    port: 6379
+    password: austin
 
 #TODO kafka topic配置
 austin:

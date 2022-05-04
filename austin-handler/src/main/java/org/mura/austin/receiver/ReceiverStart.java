@@ -56,6 +56,9 @@ public class ReceiverStart {
     /**
      * 给每个Receiver对象的consumer方法 @KafkaListener赋值相应的groupId
      *
+     * 	AnnotationEnhancer bean definitions must be declared static
+     * 	because they are required very early in the application context’s lifecycle.
+     *
      * 首先构造ReceiverStart类，之后执行@PostConstruct注解的方法init，其中每次循环
      * 调用一次getBean方法，当bean已注册但未实例化时spring会进行实例化，实例化后会执行BeanPostProcessor
      * 之后bean初始化成功，接着进行下一次循环，最终创建M x N个Receiver（M、N分别为ChannelType和MessageType的value个数）

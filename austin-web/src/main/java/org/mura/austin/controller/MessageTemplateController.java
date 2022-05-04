@@ -2,8 +2,8 @@ package org.mura.austin.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
-import org.mura.austin.service.MessageTemplateService;
 import org.mura.austin.domain.MessageTemplate;
+import org.mura.austin.service.MessageTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

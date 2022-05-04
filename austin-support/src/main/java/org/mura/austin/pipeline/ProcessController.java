@@ -47,6 +47,7 @@ public class ProcessController {
     private Boolean preCheck(ProcessContext context) {
         // 上下文
         if (context == null) {
+            // #TODO 此处无法正确返回CONTEXT_IS_NULL信息，以后可能会改
             return false;
         }
 

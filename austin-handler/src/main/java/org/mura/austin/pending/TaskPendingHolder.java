@@ -32,7 +32,6 @@ public class TaskPendingHolder {
     private Integer maxSize = 3;
     private Integer queueSize = 100;
 
-
     /**
      * 给每个渠道，每种消息类型初始化一个线程池
      *

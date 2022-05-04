@@ -64,11 +64,6 @@ public class TaskInfo {
     private ContentModel contentModel;
 
     /**
-     * 发送文案内容
-     */
-    private String content;
-
-    /**
      * 发送账号（邮件下可有多个发送账号、短信可有多个发送账号..）
      */
     private Integer sendAccount;

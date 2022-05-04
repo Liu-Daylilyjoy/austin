@@ -1,7 +1,7 @@
 package org.mura.austin.handler;
 
-import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.ChannelType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmailHandler extends Handler {
+    public EmailHandler() {
+        channelCode = ChannelType.EMAIL.getCode();
+    }
+
     @Override
     public void handle(TaskInfo taskInfo) {
     }
