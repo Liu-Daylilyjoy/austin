@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.handler.HandlerHolder;
 import org.mura.austin.service.deduplication.DeduplicationRuleService;
+import org.mura.austin.service.discard.DiscardMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -32,11 +33,21 @@ public class Task implements Runnable {
         this.deduplicationRuleService = deduplicationRuleService;
     }
 
+    private DiscardMessageService discardMessageService;
+
+    @Autowired
+    public void setDiscardMessageService(DiscardMessageService discardMessageService) {
+        this.discardMessageService = discardMessageService;
+    }
+
     private TaskInfo taskInfo;
 
     @Override
     public void run() {
-//         0. TODO 丢弃消息
+//         0. 丢弃消息
+        if (discardMessageService.isDiscard(taskInfo)) {
+            return;
+        }
 
 //         1. 通用去重
         deduplicationRuleService.deduplicate(taskInfo);

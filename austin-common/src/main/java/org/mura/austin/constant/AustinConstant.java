@@ -16,4 +16,10 @@ public class AustinConstant {
      * 时间格式
      */
     public final static String YYYYMMDD = "yyyyMMdd";
+
+    /**
+     * Apollo常量默认值，即当无法获取目标配置时的默认值
+     */
+    public final static String APOLLO_DEFAULT_VALUE_JSON_OBJECT = "{}";
+    public final static String APOLLO_DEFAULT_VALUE_JSON_ARRAY = "[]";
 }

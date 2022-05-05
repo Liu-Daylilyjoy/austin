@@ -41,3 +41,29 @@ spring:
 austin:
   topic:
     name: austin
+
+#监控配置 NOT A MUST
+management:
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Apollo TODO 分布式配置
+app:
+  id: austin
+apollo:
+  bootstrap:
+    enabled: true
+    namespaces: boss.austin # 需访问Apollo管理面板创建部门和项目，我创建了“boss”部门和austin项目
