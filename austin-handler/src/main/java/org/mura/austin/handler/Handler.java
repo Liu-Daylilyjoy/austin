@@ -1,6 +1,9 @@
 package org.mura.austin.handler;
 
+import org.mura.austin.domain.AnchorInfo;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.AnchorState;
+import org.mura.austin.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -38,11 +41,19 @@ public abstract class Handler {
      * @param taskInfo 需要处理的任务
      */
     public void doHandler(TaskInfo taskInfo) {
-        handle(taskInfo);
+        if (!handle(taskInfo)) {
+            LogUtils.print(AnchorInfo.builder()
+                    .state(AnchorState.SEND_FAIL.getCode())
+                    .businessId(taskInfo.getBusinessId())
+                    .ids(taskInfo.getReceiver())
+                    .build());
+        } else {
+            LogUtils.print(AnchorInfo.builder().state(AnchorState.SEND_SUCCESS.getCode()).businessId(taskInfo.getBusinessId()).ids(taskInfo.getReceiver()).build());
+        }
     }
 
     /**
      * 统一处理的handler接口
      */
-    public abstract void handle(TaskInfo taskInfo);
+    public abstract boolean handle(TaskInfo taskInfo);
 }

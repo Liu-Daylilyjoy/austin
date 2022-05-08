@@ -6,6 +6,7 @@ import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Throwables;
 import com.tencentcloudapi.common.Credential;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.sms.v20210111.SmsClient;
@@ -81,21 +82,14 @@ public class TencentSmsScript implements SmsScript {
      * @return 发送短信记录
      */
     @Override
-    public List<SmsRecord> send(SmsParam smsParam) {
-        try {
-            SmsClient client = init();
+    public List<SmsRecord> send(SmsParam smsParam) throws TencentCloudSDKException {
+        SmsClient client = init();
 
-            SendSmsRequest request = assembleReq(smsParam);
+        SendSmsRequest request = assembleReq(smsParam);
 
-            SendSmsResponse response = client.SendSms(request);
+        SendSmsResponse response = client.SendSms(request);
 
-            return assembleSmsRecord(smsParam,response);
-
-        } catch (Exception e) {
-            log.error("send tencent sms fail!{},params:{}",
-                    Throwables.getStackTraceAsString(e), JSON.toJSONString(smsParam));
-            return null;
-        }
+        return assembleSmsRecord(smsParam,response);
     }
 
     /**

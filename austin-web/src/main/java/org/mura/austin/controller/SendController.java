@@ -28,19 +28,18 @@ public class SendController {
     }
 
     /**
-     * 发短信
-     *
-     * @param phone 收信手机号
+     * 发送邮件
      */
     @GetMapping("/sendSms")
-    public SendResponse sendSms(String phone, Long templateId) {
+    public SendResponse sendSms(String receiver, Long templateId) {
 //        先执行MessageTemplateController中的接口插入消息模板，才能发送短信（否则会显示找不到MessageTemplate）
 
         // 文案参数
         Map<String, String> variables = new HashMap<>(2);
-        variables.put("content", "6666");
+        variables.put("content", "6666" + System.currentTimeMillis());
+        variables.put("title", "new email from " + System.currentTimeMillis());
 
-        MessageParam messageParam = new MessageParam().setReceiver(phone).setVariables(variables);
+        MessageParam messageParam = new MessageParam().setReceiver(receiver).setVariables(variables);
 
         SendRequest sendRequest = new SendRequest().setCode(BusinessCode.COMMON_SEND.getCode())
                 .setMessageTemplateId(templateId)

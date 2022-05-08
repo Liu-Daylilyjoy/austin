@@ -89,24 +89,20 @@ https://blog.csdn.net/weixin_42565135/article/details/89502289
                 <artifactId>apollo-client-config-data</artifactId>
                 <version>1.9.1</version>
             </dependency>
+
+<!--            注解打印日志-->
+            <dependency>
+                <groupId>cn.monitor4all</groupId>
+                <artifactId>log-record-starter</artifactId>
+                <version>1.0.4</version>
+            </dependency>
+
+<!--            发送邮件-->
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>1.6.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-<!--    Lombok作用在编译期，所以我们不要把Lombok打包-->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

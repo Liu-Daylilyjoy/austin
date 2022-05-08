@@ -3,10 +3,14 @@ package org.mura.austin.receiver;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.mura.austin.domain.AnchorInfo;
+import org.mura.austin.domain.LogParam;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.AnchorState;
 import org.mura.austin.pending.Task;
 import org.mura.austin.pending.TaskPendingHolder;
 import org.mura.austin.utils.GroupIdMappingUtils;
+import org.mura.austin.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -28,6 +32,11 @@ import java.util.Optional;
  */
 @Slf4j
 public class Receiver {
+     /**
+     * 日志类型常量，格式：类#方法
+     */
+    private static final String LOG_BIZ_TYPE = "Receiver#consume";
+
     private ApplicationContext context;
 
     @Autowired
@@ -59,6 +68,9 @@ public class Receiver {
 //            每个消费者组 只消费 他们自身关心的消息
             if (topicGroupId.equals(messageGroupId)) {
                 for (TaskInfo taskInfo : taskInfos) {
+                    LogUtils.print(LogParam.builder().bizType(LOG_BIZ_TYPE).object(taskInfo).build(),
+                            AnchorInfo.builder().ids(taskInfo.getReceiver()).businessId(taskInfo.getBusinessId()).state(AnchorState.RECEIVE.getCode()).build());
+
                     Task task = context.getBean(Task.class).setTaskInfo(taskInfo);
 
 //                    #TODO 将获取到的消息交给线程池去处理，实现缓存，可能会出现服务器关闭导致任务丢失的情况

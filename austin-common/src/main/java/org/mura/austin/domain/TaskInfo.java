@@ -26,6 +26,7 @@ public class TaskInfo {
 
     /**
      * 业务Id(用于数据追踪)
+     * 生成逻辑参考TaskInfoUtils
      */
     private Long businessId;
 

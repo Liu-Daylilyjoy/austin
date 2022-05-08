@@ -3,8 +3,10 @@ package org.mura.austin.service.deduplication;
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.constant.AustinConstant;
+import org.mura.austin.domain.AnchorInfo;
 import org.mura.austin.domain.DeduplicationParam;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.utils.LogUtils;
 import org.mura.austin.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,7 +67,14 @@ public abstract class AbstractDeduplicationService {
         putInRedis(readyPutRedisReceiver, inRedisValue, param);
 
         // 剔除符合去重条件的用户（频次去重）
-        taskInfo.getReceiver().removeAll(filterReceiver);
+        if (CollUtil.isNotEmpty(filterReceiver)) {
+            taskInfo.getReceiver().removeAll(filterReceiver);
+            LogUtils.print(AnchorInfo.builder()
+                    .businessId(taskInfo.getBusinessId())
+                    .ids(filterReceiver)
+                    .state(param.getAnchorState().getCode())
+                    .build());
+        }
     }
 
     /**

@@ -8,3 +8,9 @@ File->Project Structure中更改了java版本为java8，但是没有在setting�
 # 3、查询数据库报错：java.sql.SQLNonTransientConnectionException: Public Key Retrieval is not allowed
 因为我的MySQL不是安装在本机的而且我使用的MySQl版本是8.0.28，所以我需要在连接数据库的字符串中指定这样一行：
 allowPublicKeyRetrieval=true 允许客户端从服务器获取公钥
+
+# 4、启动项目报错：Caused by: java.nio.charset.MalformedInputException: Input length = 2
+解决：yml中不能包含中文，去掉中文注释或者在File encoding中设置所有的编码为UTF-8即可
+我这样设置之后仍然没有解决问题，于是我重新创建了application.yml，成功解决了问题
+
+# 5、启动项目报错：log-record的classLoader无法找到，解决方法是使用低版本的log-record

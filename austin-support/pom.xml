@@ -73,6 +73,11 @@
             <groupId>com.ctrip.framework.apollo</groupId>
             <artifactId>apollo-client-config-data</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cn.monitor4all</groupId>
+            <artifactId>log-record-starter</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <resources>

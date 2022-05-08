@@ -68,6 +68,6 @@ apollo:
   bootstrap:
     enabled: true
     namespaces: boss.austin # 需访问Apollo管理面板创建部门和项目，我创建了“boss”部门和austin项目
-# TODO Apollo的地址，端口是eureka管理界面的端口
+  # TODO Apollo的地址，端口是eureka管理界面的端口
   config-service: "http://192.168.159.128:7000"
 #  想要动态刷新配置，还需要设置Apollo的监听器

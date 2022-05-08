@@ -1,6 +1,7 @@
 target/
 .idea/
 austin-handler/src/main/resources/sms.properties
+austin-handler/src/main/resources/email.properties
 *.iml
 
 !austin-service-api/

@@ -2,6 +2,7 @@ package org.mura.austin.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import org.mura.austin.enums.AnchorState;
 
 /**
  * @author Akutagawa Murasame
@@ -28,4 +29,9 @@ public class DeduplicationParam {
      * 最大重复阈值，即重复次数大于等于这个值才去重，避免推送类的消息重复打扰用户
      */
     private Integer countNum;
+
+    /**
+     * 标识属于哪种去重
+     */
+    private AnchorState anchorState;
 }

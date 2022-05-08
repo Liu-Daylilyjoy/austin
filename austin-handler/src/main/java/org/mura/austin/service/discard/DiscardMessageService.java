@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.mura.austin.constant.AustinConstant;
+import org.mura.austin.domain.AnchorInfo;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.AnchorState;
+import org.mura.austin.utils.LogUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,6 +31,16 @@ public class DiscardMessageService {
         JSONArray array = JSON.parseArray(config.getProperty(DISCARD_MESSAGE_KEY,
                 AustinConstant.APOLLO_DEFAULT_VALUE_JSON_ARRAY));
 
-        return array.contains(String.valueOf(taskInfo.getMessageTemplateId()));
+        if(array.contains(String.valueOf(taskInfo.getMessageTemplateId()))) {
+            LogUtils.print(AnchorInfo.builder()
+                    .businessId(taskInfo.getBusinessId())
+                    .ids(taskInfo.getReceiver())
+                    .state(AnchorState.DISCARD.getCode())
+                    .build());
+
+            return true;
+        }
+
+        return false;
     }
 }

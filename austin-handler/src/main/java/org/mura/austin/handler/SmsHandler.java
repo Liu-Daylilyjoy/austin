@@ -2,6 +2,9 @@ package org.mura.austin.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.google.common.base.Throwables;
+import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.dto.SmsContentModel;
 import org.mura.austin.enums.ChannelType;
@@ -21,6 +24,7 @@ import java.util.List;
  * 短信Handler
  */
 @Component
+@Slf4j
 public class SmsHandler extends Handler {
     public SmsHandler() {
         channelCode = ChannelType.SMS.getCode();
@@ -41,7 +45,7 @@ public class SmsHandler extends Handler {
     }
 
     @Override
-    public void handle(TaskInfo taskInfo) {
+    public boolean handle(TaskInfo taskInfo) {
         SmsParam smsParam = SmsParam.builder()
                 .phones(taskInfo.getReceiver())
                 .content(getSmsContent(taskInfo))
@@ -49,11 +53,20 @@ public class SmsHandler extends Handler {
                 .supplierId(10)
                 .supplierName("腾讯云通知类消息渠道").build();
 
-        List<SmsRecord> recordList = smsScript.send(smsParam);
+        try {
+            List<SmsRecord> recordList = smsScript.send(smsParam);
 
-        if (!CollUtil.isEmpty(recordList)) {
-            smsRecordService.saveBatch(recordList);
+            if (!CollUtil.isEmpty(recordList)) {
+                smsRecordService.saveBatch(recordList);
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.error("SmsHandler#handle fail:{},params:{}",
+                    Throwables.getStackTraceAsString(e), JSON.toJSONString(smsParam));
         }
+
+        return false;
     }
 
     /**
