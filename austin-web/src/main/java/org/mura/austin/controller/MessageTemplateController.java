@@ -95,7 +95,7 @@ public class MessageTemplateController {
                 .id(3L)
                 .idType(30)
                 .auditStatus(10)
-                .name("营销短信")
+                .name("test邮件")
                 .auditStatus(10)
                 .flowId("mura")
                 .msgStatus(10)

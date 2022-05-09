@@ -2,6 +2,10 @@ package org.mura.austin.handler;
 
 import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ctrip.framework.apollo.Config;
+import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.google.common.base.Throwables;
 import com.sun.mail.util.MailSSLSocketFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -21,21 +25,21 @@ import java.security.GeneralSecurityException;
  *
  * 邮件发送处理
  *
- * 发送邮件需要设置用户名与密码，这个在emailEg.properties中给出了，
- * 设置完成后将文件名改为email.properties
+ * 邮件配置在Apollo中，配置名称为email_host
+ * 格式{"username":"xxxx@xxxx.xxxx","password":"xxxx","from":"xxxx@xxxx.xxxx或xxxx< xxxx@xxxx.xxxx >"}
  */
 @Component
 @Slf4j
 @PropertySource(value = {"classpath:/email.properties"}, encoding = "utf-8")
 public class EmailHandler extends Handler {
-    @Value("${username}")
-    private String username;
+    private final static String EMAIL_HOST = "email_host";
+    private final static String WRONG_EMAIL = "wrong@wrong.wrong";
+    private final static String USERNAME = "username";
+    private final static String PASSWORD = "password";
+    private final static String FROM = "from";
 
-    @Value("${password}")
-    private String password;
-
-    @Value("${from}")
-    private String from;
+    @ApolloConfig("boss.austin")
+    Config config;
 
     public EmailHandler() {
         channelCode = ChannelType.EMAIL.getCode();
@@ -61,10 +65,12 @@ public class EmailHandler extends Handler {
     private MailAccount getAccount() {
         MailAccount account = new MailAccount();
         try {
+            JSONObject properties = JSON.parseObject(config.getProperty(EMAIL_HOST, WRONG_EMAIL));
+
 //            设置QQ邮箱的SMTP服务器域名
             account.setHost("smtp.qq.com").setPort(465);
-            account.setUser(username).setPass(password).setAuth(true);
-            account.setFrom(from);
+            account.setUser(properties.getString(USERNAME)).setPass(properties.getString(PASSWORD)).setAuth(true);
+            account.setFrom(properties.getString(FROM));
 
             MailSSLSocketFactory mailSSLSocketFactory = new MailSSLSocketFactory();
             mailSSLSocketFactory.setTrustAllHosts(true);

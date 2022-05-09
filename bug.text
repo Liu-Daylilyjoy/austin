@@ -14,3 +14,7 @@ allowPublicKeyRetrieval=true 允许客户端从服务器获取公钥
 我这样设置之后仍然没有解决问题，于是我重新创建了application.yml，成功解决了问题
 
 # 5、启动项目报错：log-record的classLoader无法找到，解决方法是使用低版本的log-record
+
+# 6、发送邮件报错：javax.mail.AuthenticationFailedException: 535 Login Fail. Please enter your authorization code to login
+但是我确实是使用了密码登录的，于是我将用户密码信息直接写在代码中发现可以正常发送邮件，调试发现写在properties文件中的账号信息自动注入时将@前的信息单独拿出来注入了
+例如properties中的akutagawa_murasame@mailfox.com注入之后成了Akutagawa Murasame，解决方法是将配置信息写在Apollo中

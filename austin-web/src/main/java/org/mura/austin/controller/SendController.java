@@ -36,8 +36,8 @@ public class SendController {
 
         // 文案参数
         Map<String, String> variables = new HashMap<>(2);
-        variables.put("content", "6666" + System.currentTimeMillis());
-        variables.put("title", "new email from " + System.currentTimeMillis());
+        variables.put("content", "6666");
+        variables.put("title", "new email");
 
         MessageParam messageParam = new MessageParam().setReceiver(receiver).setVariables(variables);
 
