@@ -41,15 +41,16 @@ public abstract class Handler {
      * @param taskInfo 需要处理的任务
      */
     public void doHandler(TaskInfo taskInfo) {
-        if (!handle(taskInfo)) {
+        if (handle(taskInfo)) {
             LogUtils.print(AnchorInfo.builder()
-                    .state(AnchorState.SEND_FAIL.getCode())
+                    .state(AnchorState.SEND_SUCCESS.getCode())
                     .businessId(taskInfo.getBusinessId())
                     .ids(taskInfo.getReceiver())
                     .build());
-        } else {
-            LogUtils.print(AnchorInfo.builder().state(AnchorState.SEND_SUCCESS.getCode()).businessId(taskInfo.getBusinessId()).ids(taskInfo.getReceiver()).build());
+            return;
         }
+
+        LogUtils.print(AnchorInfo.builder().state(AnchorState.SEND_FAIL.getCode()).businessId(taskInfo.getBusinessId()).ids(taskInfo.getReceiver()).build());
     }
 
     /**
