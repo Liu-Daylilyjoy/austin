@@ -14,8 +14,8 @@
 
 - 先注册腾讯短信服务
   > https://blog.csdn.net/Kevinnsm/article/details/119768203
-- 配置handler模块中的smsEg.properties文件
-- 访问localhost:8080/sendSms?phone=......即可发送短信，群发多个号码使用','分割
+
+- 在Apollo配置中心配置短信和邮件发送的账户名密码
 
 目前使用的技术：
 - docker(容器技术，快速部署中间件)

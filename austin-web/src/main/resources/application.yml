@@ -40,7 +40,7 @@ spring:
 #TODO kafka topic配置
 austin:
   topic:
-    name: austin
+    name: austinTopic
 
 #监控配置 NOT A MUST
 #采集路径写在了prometheus.yml中

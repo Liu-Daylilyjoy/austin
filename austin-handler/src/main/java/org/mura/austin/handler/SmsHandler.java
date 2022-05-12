@@ -50,8 +50,8 @@ public class SmsHandler extends Handler {
                 .phones(taskInfo.getReceiver())
                 .content(getSmsContent(taskInfo))
                 .messageTemplateId(taskInfo.getMessageTemplateId())
-                .supplierId(10)
-                .supplierName("腾讯云通知类消息渠道").build();
+                .sendAccount(taskInfo.getSendAccount())
+                .build();
 
         try {
             List<SmsRecord> recordList = smsScript.send(smsParam);

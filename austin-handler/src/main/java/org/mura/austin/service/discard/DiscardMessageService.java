@@ -28,6 +28,7 @@ public class DiscardMessageService {
      * 丢弃消息，配置在Apollo，在配置中设置可以用来临时屏蔽一些消息模板
      */
     public boolean isDiscard(TaskInfo taskInfo) {
+//         配置示例:	["1","2"]
         JSONArray array = JSON.parseArray(config.getProperty(DISCARD_MESSAGE_KEY,
                 AustinConstant.APOLLO_DEFAULT_VALUE_JSON_ARRAY));
 

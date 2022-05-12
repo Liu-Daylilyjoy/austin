@@ -53,6 +53,7 @@ public class DeduplicationRuleService {
     }
 
     public void deduplicate(TaskInfo taskInfo) {
+//         配置示例:{"contentDeduplication":{"num":1,"time":300},"frequencyDeduplication":{"num":5}}
 //        尝试获取去重配置，无法获取则返回AustinConstant.APOLLO_DEFAULT_VALUE_JSON_OBJECT("{}")
         JSONObject property = JSON.parseObject(config.getProperty(DEDUPLICATION_RULE_KEY, AustinConstant.APOLLO_DEFAULT_VALUE_JSON_OBJECT));
         JSONObject contentDeduplication = property.getJSONObject(CONTENT_DEDUPLICATION);
