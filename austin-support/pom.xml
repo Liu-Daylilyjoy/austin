@@ -78,6 +78,12 @@
             <groupId>cn.monitor4all</groupId>
             <artifactId>log-record-starter</artifactId>
         </dependency>
+
+<!--        日志聚合工具-->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>logback-gelf</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <resources>

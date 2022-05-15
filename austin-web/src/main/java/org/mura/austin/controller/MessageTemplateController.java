@@ -2,10 +2,13 @@ package org.mura.austin.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.mura.austin.domain.MessageTemplate;
 import org.mura.austin.service.MessageTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ import java.util.List;
  * 设置信息模板接口
  */
 @RestController
+@RequestMapping("/Message")
+@Api("消息模板")
 public class MessageTemplateController {
     private MessageTemplateService messageTemplateService;
 
@@ -30,6 +35,7 @@ public class MessageTemplateController {
      * 测试insert
      */
     @GetMapping("/insert")
+    @ApiOperation("/插入数据")
     public String insert() {
         List<MessageTemplate> list = new ArrayList<>();
 
@@ -128,6 +134,7 @@ public class MessageTemplateController {
      * test query
      */
     @GetMapping("/query")
+    @ApiOperation("/查找数据")
     public String query() {
         Iterable<MessageTemplate> all = messageTemplateService.list();
 
