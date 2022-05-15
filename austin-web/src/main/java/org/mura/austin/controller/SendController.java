@@ -25,6 +25,19 @@ public class SendController {
 
     /**
      * 发送消息接口
+     *
+     * 参数使用post请求方式传递json字符串，例如：
+     * {
+     *     "code": "send",
+     *     "messageTemplateId": "3",
+     *     "messageParam": {
+     *         "receiver": "akutagawa_murasame@foxmail.com",
+     *         "variables": {
+     *             "content": "6666666",
+     *             "title": "new email"
+     *         }
+     *     }
+     * }
      */
     @PostMapping("/send")
     public SendResponse sendSms(@RequestBody SendRequest request) {

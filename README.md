@@ -6,7 +6,7 @@
 - redis(6.0)
 - mysql(8.0.28)
 - Apollo [apollo使用docker快速部署](https://www.apolloconfig.com/#/zh/deployment/quick-start-docker) ```注意检查端口是否冲突```
-- 系统监控告警是否存在对项目无影响，项目使用的监控是Prometheus，对于QPS等实时数据不太友好
+- 系统监控告警是否存在对项目无影响，项目使用的监控是Prometheus，对于QPS等实时数据不太友好 [监控成功是什么样的](images/Grafana/Grafana.md)
 - 业务监控暂时没有接入，后期考虑使用ELK（Elasticsearch + Logstash + Kibana）
 
 - 申请个人公众号（发送短信需要）
@@ -15,7 +15,8 @@
 - 先注册腾讯短信服务
   > https://blog.csdn.net/Kevinnsm/article/details/119768203
 
-- 在Apollo配置中心配置短信和邮件发送的账户名密码
+- 在Apollo配置中心配置短信和邮件发送的账户名密码 
+[Apollo配置示例](images/Apollo/Apollo.md)
 
 目前使用的技术：
 - docker(容器技术，快速部署中间件)
