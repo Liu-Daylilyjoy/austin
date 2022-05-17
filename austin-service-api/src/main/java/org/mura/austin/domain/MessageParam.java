@@ -20,7 +20,7 @@ public class MessageParam {
     private String receiver;
 
     /**
-     * 消息内容中的可变部分，可选
+     * 消息内容中的可变部分(占位符替换)，可选
      */
     private Map<String, String> variables;
 

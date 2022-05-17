@@ -41,6 +41,8 @@ spring:
 austin:
   topic:
     name: austinTopic
+  #GrayLog ip 地址 TODO
+  grayLogIp: 192.168.159.128
 
 #监控配置 NOT A MUST
 #采集路径写在了prometheus.yml中
@@ -68,6 +70,10 @@ apollo:
   bootstrap:
     enabled: true
     namespaces: boss.austin # 需访问Apollo管理面板创建部门和项目，我创建了“boss”部门和austin项目
-  # TODO Apollo的地址，端口是eureka管理界面的端口
+  # TODO Apollo的地址，端口是eureka管理界面的端口(Apollo内使用Eureka注册中心，Apollo服务和Eureka服务的地址不一样)
   config-service: "http://192.168.159.128:7000"
 #  想要动态刷新配置，还需要设置Apollo的监听器
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
