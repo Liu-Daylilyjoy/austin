@@ -19,5 +19,11 @@ allowPublicKeyRetrieval=true 允许客户端从服务器获取公钥
 但是我确实是使用了密码登录的，于是我将用户密码信息直接写在代码中发现可以正常发送邮件，调试发现写在properties文件中的账号信息自动注入时将@前的信息单独拿出来注入了
 例如properties中的akutagawa_murasame@mailfox.com注入之后成了Akutagawa Murasame，解决方法是将配置信息写在Apollo中
 
-# 7、项目启动报错：Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
+# 7、Spring Boot集成swagger后项目启动报错：Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException
 spring boot版本2.6.5 -> 2.5.6，解决问题，原因未知
+
+# 8、DeduplicationParam使用@JSONField注解后报错：com.alibaba.fastjson.JSONException: default constructor not found.
+因为FastJson底层是使用默认构造 + 反射来set字段，高版本FastJson解决了这个问题，所以升级FastJson的依赖版本就行;升级版本之后问题果然消失了
+新的问题是发送信息时报错：org.mura.austin.dto.ContentModel cannot be cast to org.mura.austin.dto.SmsContentModel
+调试发现，发送ContentModel时类型信息和参数都有，但是接受json字符串时丢失了类型信息，于是换回1.2.78版本，问题又回到了一开始。
+使用Lombok的空构造函数注解无法解决这个问题，报错提示缺少全部字段的构造函数，于是添加@AllArgsConstructor，解决了问题

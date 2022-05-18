@@ -22,7 +22,7 @@ import java.util.*;
  * 跟业务强挂钩的消息去重应由业务方自行实现，因此使用了模板设计模式
  */
 @Slf4j
-public abstract class AbstractDeduplicationService {
+public abstract class AbstractDeduplicationService implements DeduplicationService {
     private RedisUtils redisUtils;
 
     @Autowired
@@ -33,6 +33,7 @@ public abstract class AbstractDeduplicationService {
     /**
      * 去重
      */
+    @Override
     public void deduplication(DeduplicationParam param) {
         TaskInfo taskInfo = param.getTaskInfo();
 //        需要过滤的用户集合

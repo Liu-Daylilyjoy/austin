@@ -1,7 +1,10 @@
 package org.mura.austin.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mura.austin.enums.AnchorState;
 
 /**
@@ -14,6 +17,8 @@ import org.mura.austin.enums.AnchorState;
  */
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeduplicationParam {
     /**
      * TaskInfo信息
@@ -23,11 +28,13 @@ public class DeduplicationParam {
     /**
      * 去重的时间间隔，也就是redis中设置的key的存活时间
      */
+    @JSONField(name = "time")
     private Long deduplicationTime;
 
     /**
      * 最大重复阈值，即重复次数大于等于这个值才去重，避免推送类的消息重复打扰用户
      */
+    @JSONField(name = "num")
     private Integer countNum;
 
     /**
