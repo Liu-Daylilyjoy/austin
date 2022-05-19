@@ -44,7 +44,7 @@ public class SendServiceImpl implements SendService {
 
         ProcessContext process = processController.process(context);
 
-        return new SendResponse(process.getResponse().getCode(), process.getResponse().getMsg());
+        return new SendResponse(process.getResponse().getStatus(), process.getResponse().getMsg());
     }
 
     @Override
@@ -63,6 +63,6 @@ public class SendServiceImpl implements SendService {
 
         ProcessContext process = processController.process(context);
 
-        return new SendResponse(process.getResponse().getCode(), process.getResponse().getMsg());
+        return new SendResponse(process.getResponse().getStatus(), process.getResponse().getMsg());
     }
 }

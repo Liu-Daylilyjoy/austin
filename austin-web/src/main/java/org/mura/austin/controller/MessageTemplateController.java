@@ -1,28 +1,26 @@
 package org.mura.austin.controller;
 
-import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.mura.austin.domain.MessageTemplate;
 import org.mura.austin.service.MessageTemplateService;
+import org.mura.austin.vo.BasicResultVo;
+import org.mura.austin.vo.MessageTemplateVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Akutagawa Murasame
  * @date 2022/3/27 13:21
  *
  * 设置信息模板接口
+ *
+ * CrossOrigin允许Prometheus监控Spring Boot
  */
 @RestController
-@RequestMapping("/Message")
-@Api("消息模板")
+@RequestMapping("/messageTemplate")
+@Api(tags = {"消息模板"})
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class MessageTemplateController {
     private MessageTemplateService messageTemplateService;
 
@@ -32,112 +30,26 @@ public class MessageTemplateController {
     }
 
     /**
-     * 测试insert
+     * 如果Id存在，则修改
+     * 如果Id不存在，则保存
      */
-    @GetMapping("/insert")
+    @PostMapping("/save")
     @ApiOperation("/插入数据")
-    public String insert() {
-        List<MessageTemplate> list = new ArrayList<>();
-
-//        用户短信
-        list.add(MessageTemplate.builder()
-                .id(1L)
-                .name("用户短信")
-                .auditStatus(10)
-                .flowId("yyyy")
-                .msgStatus(10)
-                .idType(10)
-                .sendChannel(30)
-                .templateType(10)
-                .msgType(10)
-                .expectPushTime("0")
-                .msgContent("{\"content\":\"{$content}\"}")
-                .sendAccount(66)
-                .creator("yyyyc")
-                .updator("yyyyu")
-                .team("yyyt")
-                .proposer("yyyy22")
-                .auditor("yyyyyyz")
-                .isDeleted(0)
-                .created(Math.toIntExact(DateUtil.currentSeconds()))
-                .updated(Math.toIntExact(DateUtil.currentSeconds()))
-                .deduplicationTime(1)
-                .isNightShield(0)
-                .build());
-
-//        营销短信
-//        新增：auditStatus，expectPushTime
-        list.add(MessageTemplate.builder()
-                .id(2L)
-                .idType(30)
-                .auditStatus(10)
-                .name("营销短信")
-                .auditStatus(10)
-                .flowId("mura")
-                .msgStatus(10)
-                .idType(10)
-                .sendChannel(30)
-                .templateType(10)
-                .msgType(20)
-                .expectPushTime("0")
-                .msgContent("{\"content\":\"{$content}\"}")
-                .sendAccount(66)
-                .creator("murasame_c")
-                .updator("murasame_u")
-                .team("murasame_t")
-                .proposer("2233")
-                .auditor("murasame_z")
-                .isDeleted(0)
-                .created(Math.toIntExact(DateUtil.currentSeconds()))
-                .updated(Math.toIntExact(DateUtil.currentSeconds()))
-                .expectPushTime("0")
-                .deduplicationTime(1)
-                .isNightShield(0)
-                .build());
-
-//        邮件消息模板
-        list.add(MessageTemplate.builder()
-                .name("test邮件")
-                .id(3L)
-                .idType(30)
-                .auditStatus(10)
-                .name("test邮件")
-                .auditStatus(10)
-                .flowId("mura")
-                .msgStatus(10)
-                .idType(50)
-                .sendChannel(40)
-                .templateType(20)
-                .msgType(10)
-                .expectPushTime("0")
-                .msgContent("{\"content\":\"{$content}\",\"title\":\"{$title}\"}")
-                .sendAccount(66)
-                .creator("murasame_c")
-                .updator("murasame_u")
-                .team("murasame_t")
-                .proposer("2233")
-                .auditor("murasame_z")
-                .isDeleted(0)
-                .created(Math.toIntExact(DateUtil.currentSeconds()))
-                .updated(Math.toIntExact(DateUtil.currentSeconds()))
-                .expectPushTime("0")
-                .deduplicationTime(1)
-                .isNightShield(0)
-                .build());
-
-        messageTemplateService.saveBatch(list);
-
-        return JSON.toJSONString(JSON.toJSONString(list));
+    public BasicResultVo saveOrUpdate(@RequestBody MessageTemplate messageTemplate) {
+        boolean info = messageTemplateService.save(messageTemplate);
+        return BasicResultVo.success(info);
     }
 
     /**
-     * test query
+     * 列表数据
      */
     @GetMapping("/query")
     @ApiOperation("/查找数据")
-    public String query() {
+    public BasicResultVo queryList() {
         Iterable<MessageTemplate> all = messageTemplateService.list();
+        long count = messageTemplateService.count();
+        MessageTemplateVo messageTemplateVo = MessageTemplateVo.builder().count(count).rows(all).build();
 
-        return JSON.toJSONString(all);
+        return BasicResultVo.success(messageTemplateVo);
     }
 }
