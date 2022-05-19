@@ -50,7 +50,7 @@ public class Task implements Runnable {
         }
 
 //         1. 通用去重
-        deduplicationRuleService.deduplicate(taskInfo);
+        deduplicationRuleService.deduplication(taskInfo);
 
 //         2. 发送消息
         if (CollUtil.isNotEmpty(taskInfo.getReceiver())) {

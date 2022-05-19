@@ -2,7 +2,9 @@ package org.mura.austin.service.deduplication.build;
 
 import com.alibaba.fastjson.JSONObject;
 import org.mura.austin.domain.DeduplicationParam;
+import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.enums.AnchorState;
+import org.mura.austin.enums.DeduplicationType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,16 +12,15 @@ import org.springframework.stereotype.Service;
  * @date 2022/5/18 13:00
  */
 @Service
-public class ContentDeduplicationBuilder implements Builder {
-    @Override
-    public DeduplicationParam build(String deduplication, String key) {
-        JSONObject object = JSONObject.parseObject(deduplication);
-        if (object == null) {
-            return null;
-        }
+public class ContentDeduplicationBuilder extends AbstractDeduplicationBuilder implements Builder {
+    public ContentDeduplicationBuilder() {
+        deduplicationType = DeduplicationType.CONTENT.getCode();
+    }
 
-        DeduplicationParam deduplicationParam = JSONObject.parseObject(object.getString(key), DeduplicationParam.class);
-        if (deduplicationParam == null) {
+    @Override
+    public DeduplicationParam build(String deduplication, TaskInfo taskInfo) {
+        DeduplicationParam deduplicationParam = getParamsFromConfig(deduplicationType, deduplication, taskInfo);
+        if (deduplication == null) {
             return null;
         }
 

@@ -2,13 +2,11 @@ package org.mura.austin.service.deduplication;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
-import com.google.common.collect.Lists;
 import org.mura.austin.constant.AustinConstant;
 import org.mura.austin.domain.DeduplicationParam;
 import org.mura.austin.domain.TaskInfo;
-import org.mura.austin.service.deduplication.build.BuilderFactory;
+import org.mura.austin.enums.DeduplicationType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,47 +19,29 @@ import java.util.List;
  */
 @Service
 public class DeduplicationRuleService {
-    private static final String SERVICE = "Service";
+    public static final String DEDUPLICATION_RULE_KEY = "deduplication";
 
     @ApolloConfig("boss.austin")
     private Config config;
 
-    private ApplicationContext applicationContext;
-
-    private BuilderFactory builderFactory;
+    private DeduplicationHolder deduplicationHolder;
 
     @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public void setDeduplicationHolder(DeduplicationHolder deduplicationHolder) {
+        this.deduplicationHolder = deduplicationHolder;
     }
 
-    @Autowired
-    public void setBuilderFactory(BuilderFactory builderFactory) {
-        this.builderFactory = builderFactory;
-    }
+    public void deduplication(TaskInfo taskInfo) {
+        // 配置样例：{"deduplication_10":{"num":1,"time":300},"deduplication_20":{"num":5}}
+        String deduplicationConfig = config.getProperty(DEDUPLICATION_RULE_KEY, AustinConstant.APOLLO_DEFAULT_VALUE_JSON_OBJECT);
 
-    //去重服务责任链
-    private static final List<String> DEDUPLICATION_LIST = Lists.newArrayList(DeduplicationConstants.CONTENT_DEDUPLICATION, DeduplicationConstants.FREQUENCY_DEDUPLICATION);
-
-    public void deduplicate(TaskInfo taskInfo) {
-//         配置示例:{"contentDeduplication":{"num":1,"time":300},"frequencyDeduplication":{"num":5}}
-//        尝试获取去重配置，无法获取则返回AustinConstant.APOLLO_DEFAULT_VALUE_JSON_OBJECT("{}")
-        String deduplication = config.getProperty(DeduplicationConstants.DEDUPLICATION_RULE_KEY, AustinConstant.APOLLO_DEFAULT_VALUE_JSON_OBJECT);
-
-        DEDUPLICATION_LIST.forEach(
-                key -> {
-                    DeduplicationParam deduplicationParam = builderFactory.select(key).build(deduplication, key);
-                    if (deduplicationParam != null) {
-                        deduplicationParam.setTaskInfo(taskInfo);
-                        DeduplicationService deduplicationService = findService(key + SERVICE);
-                        deduplicationService.deduplication(deduplicationParam);
-                    }
-                }
-        );
-    }
-
-//    一切都是为了拓展性
-    private DeduplicationService findService(String beanName) {
-        return applicationContext.getBean(beanName, DeduplicationService.class);
+        // 去重
+        List<Integer> deduplicationList = DeduplicationType.getDeduplicationList();
+        for (Integer deduplicationType : deduplicationList) {
+            DeduplicationParam deduplicationParam = deduplicationHolder.selectBuilder(deduplicationType).build(deduplicationConfig, taskInfo);
+            if (deduplicationParam != null) {
+                deduplicationHolder.selectService(deduplicationType).deduplication(deduplicationParam);
+            }
+        }
     }
 }

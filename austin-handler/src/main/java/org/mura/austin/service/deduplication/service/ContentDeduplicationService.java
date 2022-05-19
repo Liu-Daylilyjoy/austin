@@ -1,8 +1,9 @@
-package org.mura.austin.service.deduplication;
+package org.mura.austin.service.deduplication.service;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.DeduplicationType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ContentDeduplicationService extends AbstractDeduplicationService {
+    public ContentDeduplicationService() {
+        deduplicationType = DeduplicationType.CONTENT.getCode();
+    }
+
     /**
      * 内容去重，构建key
      *

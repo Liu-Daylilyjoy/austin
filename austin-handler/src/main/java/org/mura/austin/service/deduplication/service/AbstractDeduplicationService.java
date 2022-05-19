@@ -1,4 +1,4 @@
-package org.mura.austin.service.deduplication;
+package org.mura.austin.service.deduplication.service;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -6,10 +6,12 @@ import org.mura.austin.constant.AustinConstant;
 import org.mura.austin.domain.AnchorInfo;
 import org.mura.austin.domain.DeduplicationParam;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.service.deduplication.DeduplicationHolder;
 import org.mura.austin.utils.LogUtils;
 import org.mura.austin.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -23,6 +25,16 @@ import java.util.*;
  */
 @Slf4j
 public abstract class AbstractDeduplicationService implements DeduplicationService {
+    protected Integer deduplicationType;
+
+    @Autowired
+    private DeduplicationHolder deduplicationHolder;
+
+    @PostConstruct
+    private void init() {
+        deduplicationHolder.putService(deduplicationType, this);
+    }
+
     private RedisUtils redisUtils;
 
     @Autowired

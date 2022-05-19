@@ -86,7 +86,7 @@ public class TencentSmsScript implements SmsScript {
                     .reverse().substring(0, PHONE_NUMBER)).reverse().toString();
 
             SmsRecord smsRecord = SmsRecord.builder()
-                    .sendDate(Integer.valueOf(DateUtil.format(new Date(), AustinConstant.YYYYMMDD)))
+                    .sendDate(Integer.valueOf(DateUtil.format(new Date(), AustinConstant.YYYY_MM_DD)))
                     .messageTemplateId(smsParam.getMessageTemplateId())
                     .phone(Long.valueOf(phone))
                     .supplierId(tencentSmsParam.getSupplierId())

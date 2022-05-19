@@ -1,4 +1,4 @@
-package org.mura.austin.service.deduplication;
+package org.mura.austin.service.deduplication.service;
 
 import org.mura.austin.domain.DeduplicationParam;
 
@@ -7,5 +7,8 @@ import org.mura.austin.domain.DeduplicationParam;
  * @date 2022/5/18 13:43
  */
 public interface DeduplicationService {
+    /**
+     * 去重
+     */
     void deduplication(DeduplicationParam param);
 }

@@ -94,7 +94,7 @@ https://blog.csdn.net/weixin_42565135/article/details/89502289
             <dependency>
                 <groupId>cn.monitor4all</groupId>
                 <artifactId>log-record-starter</artifactId>
-                <version>1.0.4</version>
+                <version>1.0.4.1</version>
             </dependency>
 
 <!--            发送邮件-->

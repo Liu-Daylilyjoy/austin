@@ -1,7 +1,8 @@
-package org.mura.austin.service.deduplication;
+package org.mura.austin.service.deduplication.service;
 
 import cn.hutool.core.util.StrUtil;
 import org.mura.austin.domain.TaskInfo;
+import org.mura.austin.enums.DeduplicationType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FrequencyDeduplicationService extends AbstractDeduplicationService {
+    public FrequencyDeduplicationService() {
+        deduplicationType = DeduplicationType.FREQUENCY.getCode();
+    }
+
     private static final String PREFIX = "FRE";
 
     /**
