@@ -35,7 +35,7 @@ import java.security.GeneralSecurityException;
  * ] */
 @Component
 @Slf4j
-public class EmailHandler extends Handler {
+public class EmailHandler extends BaseHandler implements Handler {
     private static final String EMAIL_ACCOUNT_KEY = "emailAccount";
     private static final String PREFIX = "email_";
 

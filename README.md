@@ -24,7 +24,7 @@
 - Logback(日志)
 - Fastjson(包装了对于json和普通对象转换的各种操作)
 - MySQL(数据库)
-- MyBatis(-Plus)(数据库访问)
+- Spring Data JPA(数据库访问)
 - tencentcloud-sdk-java(腾讯云短信sdk)
 - Apache Kafka(消息队列，抗压削峰)
 - Redis(NoSQL，设置唯一key，消息去重)

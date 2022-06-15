@@ -5,13 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
+import org.mura.austin.dao.SmsRecordDao;
 import org.mura.austin.domain.TaskInfo;
 import org.mura.austin.dto.SmsContentModel;
 import org.mura.austin.enums.ChannelType;
 import org.mura.austin.domain.SmsRecord;
 import org.mura.austin.domain.SmsParam;
 import org.mura.austin.script.SmsScript;
-import org.mura.austin.service.SmsRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,16 +25,16 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class SmsHandler extends Handler {
+public class SmsHandler extends BaseHandler implements Handler {
     public SmsHandler() {
         channelCode = ChannelType.SMS.getCode();
     }
 
-    private SmsRecordService smsRecordService;
+    private SmsRecordDao smsRecordDao;
 
     @Autowired
-    public void setSmsRecordService(SmsRecordService smsRecordService) {
-        this.smsRecordService = smsRecordService;
+    public void setSmsRecordDao(SmsRecordDao smsRecordDao) {
+        this.smsRecordDao = smsRecordDao;
     }
 
     private SmsScript smsScript;
@@ -57,7 +57,7 @@ public class SmsHandler extends Handler {
             List<SmsRecord> recordList = smsScript.send(smsParam);
 
             if (!CollUtil.isEmpty(recordList)) {
-                smsRecordService.saveBatch(recordList);
+                smsRecordDao.saveAll(recordList);
             }
 
             return true;

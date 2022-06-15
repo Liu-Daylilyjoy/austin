@@ -14,13 +14,13 @@ import java.util.Map;
  */
 @Component
 public class HandlerHolder {
-    private final Map<Integer, Handler> handlerMap = new HashMap<>(32);
+    private final Map<Integer, BaseHandler> handlerMap = new HashMap<>(32);
 
-    public void putHandler(Integer channelCode, Handler handler) {
+    public void putHandler(Integer channelCode, BaseHandler handler) {
         handlerMap.put(channelCode, handler);
     }
 
-    public Handler route(Integer channelCode) {
+    public BaseHandler route(Integer channelCode) {
         return handlerMap.get(channelCode);
     }
 }

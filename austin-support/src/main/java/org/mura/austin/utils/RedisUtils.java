@@ -52,7 +52,7 @@ public class RedisUtils {
     /**
      * pipeline 设置 key-value 并设置过期时间，批量设置多个key
      */
-    public void pipelineSetEX(Map<String, String> keyValues, Long seconds) {
+    public void pipelineSetEx(Map<String, String> keyValues, Long seconds) {
         try {
             redisTemplate.executePipelined((RedisCallback<String>) connection -> {
                 for (Map.Entry<String, String> entry : keyValues.entrySet()) {

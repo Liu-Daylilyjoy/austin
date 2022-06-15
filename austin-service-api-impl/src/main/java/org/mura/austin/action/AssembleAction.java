@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.constant.AustinConstant;
+import org.mura.austin.dao.MessageTemplateDao;
 import org.mura.austin.domain.MessageParam;
 import org.mura.austin.domain.MessageTemplate;
 import org.mura.austin.domain.SendTaskModel;
@@ -16,7 +17,6 @@ import org.mura.austin.enums.ChannelType;
 import org.mura.austin.enums.ResponseStatusEnum;
 import org.mura.austin.pipeline.BusinessProcess;
 import org.mura.austin.pipeline.ProcessContext;
-import org.mura.austin.service.MessageTemplateService;
 import org.mura.austin.utils.ContentHolderUtils;
 import org.mura.austin.utils.TaskInfoUtils;
 import org.mura.austin.vo.BasicResultVo;
@@ -34,11 +34,11 @@ import java.util.*;
  */
 @Slf4j
 public class AssembleAction implements BusinessProcess {
-    private MessageTemplateService messageTemplateService;
+    private MessageTemplateDao messageTemplateDao;
 
     @Autowired
-    public void setMessageTemplateService(MessageTemplateService messageTemplateService) {
-        this.messageTemplateService = messageTemplateService;
+    public void setMessageTemplateDao(MessageTemplateDao messageTemplateDao) {
+        this.messageTemplateDao = messageTemplateDao;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AssembleAction implements BusinessProcess {
 
 //        责任链，消息模板为空或者已被删除则需要中断，说实话，写得很厉害
         try {
-            Optional<MessageTemplate> messageTemplate = Optional.ofNullable(messageTemplateService.getById(messageTemplateId));
+            Optional<MessageTemplate> messageTemplate = messageTemplateDao.findById(messageTemplateId);
             if (!messageTemplate.isPresent() || messageTemplate.get().getIsDeleted().equals(AustinConstant.TRUE)) {
                 context.setNeedBreak(true).setResponse(BasicResultVo.fail(ResponseStatusEnum.TEMPLATE_NOT_FOUND));
 

@@ -5,26 +5,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author Akutagawa Murasame
- * @date 2022/5/19 15:16
+ * @date 2022/6/13 21:19
+ *
+ * 消息模板参数，目前用来管理分页
  */
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageTemplateVo {
+public class MessageTemplateParam {
 
     /**
-     * 消息模板List
+     * 当前页码
      */
-    private List<Map<String, Object>> rows;
+    private Integer page ;
 
     /**
-     * 总条数
+     * 当前页大小
      */
-    private Long count;
+    private Integer perPage;
+
+
 }

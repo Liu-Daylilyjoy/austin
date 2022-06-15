@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class TaskInfoUtils {
     private static final int TYPE_FLAG = 1000000;
+    private static final char PARAM = '?';
 
     /**
      * 生成BusinessId
@@ -27,7 +28,7 @@ public class TaskInfoUtils {
         url = url.trim();
         Long businessId = generateBusinessId(templateId, templateType);
 
-        if (url.indexOf('?') == -1) {
+        if (url.indexOf(PARAM) == -1) {
             return url + "?track_code_bid=" + businessId;
         } else {
             return url + "&track_code_bid=" + businessId;

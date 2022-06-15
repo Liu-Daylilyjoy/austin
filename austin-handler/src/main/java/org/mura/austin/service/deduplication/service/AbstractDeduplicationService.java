@@ -118,7 +118,7 @@ public abstract class AbstractDeduplicationService implements DeduplicationServi
 
 //        设置过期时间
         if (CollUtil.isNotEmpty(keyValues)) {
-            redisUtils.pipelineSetEX(keyValues, param.getDeduplicationTime());
+            redisUtils.pipelineSetEx(keyValues, param.getDeduplicationTime());
         }
     }
 
