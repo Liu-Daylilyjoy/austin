@@ -13,6 +13,8 @@ import java.util.Map;
 /**
  * @author Akutagawa Murasame
  * @date 2022/6/13 21:34
+ *
+ * 项目的前端页面使用了amis，这个框架对于嵌套的json支持性不太好，所以只能先转换成map
  */
 public class ConvertMap {
     /**

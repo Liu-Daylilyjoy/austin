@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * @author Akutagawa Murasame
  * @date 2022/3/23 21:10
+ *
  * java3y：
  * 1. 发送短信接入文档：https://cloud.tencent.com/document/api/382/55981
  * 2. 推荐直接使用SDK
@@ -91,7 +92,7 @@ public class TencentSmsScript implements SmsScript {
                     .phone(Long.valueOf(phone))
                     .supplierId(tencentSmsParam.getSupplierId())
                     .supplierName(tencentSmsParam.getSupplierName())
-                    .msgContent(sendStatus.getMessage())
+                    .msgContent(smsParam.getContent())
                     .seriesId(sendStatus.getSerialNo())
                     .chargingNum(Math.toIntExact(sendStatus.getFee()))
                     .status(SmsStatus.SEND_SUCCESS.getCode())

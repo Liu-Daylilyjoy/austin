@@ -1,5 +1,7 @@
 特别鸣谢：[java3y/austin](https://gitee.com/zhongfucheng/austin)
 
+[前端仓库](https://github.com/ZhongFuCheng3y/austin-admin) (需要node)
+
 运行环境：
 - jdk1.8+ 
 - kafka(2.8)
@@ -45,6 +47,7 @@
 - 丢弃使用了某一消息模板的消息
 - 可以统一配置项目中的去重参数
 - 单发、群发邮件
+- 在前端页面管理MessageTemplate
 
 业务解决方案：
 - 多个短信接口供应商解耦与多种消息发送方式解耦：

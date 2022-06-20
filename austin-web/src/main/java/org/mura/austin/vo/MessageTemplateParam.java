@@ -27,5 +27,18 @@ public class MessageTemplateParam {
      */
     private Integer perPage;
 
+    /**
+     * 模板ID
+     */
+    private Long id;
 
+    /**
+     * 消息接收者(测试发送时使用)
+     */
+    private String receiver;
+
+    /**
+     * 下发参数信息
+     */
+    private String msgContent;
 }

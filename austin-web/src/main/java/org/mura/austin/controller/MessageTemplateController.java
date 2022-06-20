@@ -1,10 +1,17 @@
 package org.mura.austin.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.mura.austin.domain.MessageParam;
 import org.mura.austin.domain.MessageTemplate;
+import org.mura.austin.domain.SendRequest;
+import org.mura.austin.domain.SendResponse;
+import org.mura.austin.enums.BusinessCode;
+import org.mura.austin.enums.ResponseStatusEnum;
 import org.mura.austin.service.MessageTemplateService;
+import org.mura.austin.service.SendService;
 import org.mura.austin.utils.ConvertMap;
 import org.mura.austin.vo.BasicResultVo;
 import org.mura.austin.vo.MessageTemplateParam;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -23,12 +31,12 @@ import java.util.stream.Collectors;
  *
  * 设置信息模板接口
  *
- * CrossOrigin允许Prometheus监控Spring Boot
+ * CrossOrigin允许项目前端（端口3000）访问后端
  */
 @RestController
 @RequestMapping("/messageTemplate")
 @Api(tags = {"消息模板"})
-@CrossOrigin(origins = "http://192.168.159.128:3000", allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true", allowedHeaders = "*")
 public class MessageTemplateController {
 //    想要获取对应数据库MessageTemplate的字段的实体类的字段
     private static final List<String> flatFieldName = Arrays.asList("msgContent");
@@ -38,6 +46,13 @@ public class MessageTemplateController {
     @Autowired
     public void setMessageTemplateDao(MessageTemplateService messageTemplateService) {
         this.messageTemplateService = messageTemplateService;
+    }
+
+    private SendService sendService;
+
+    @Autowired
+    public void setSendService(SendService sendService) {
+        this.sendService = sendService;
     }
 
     /**
@@ -102,5 +117,23 @@ public class MessageTemplateController {
         }
 
         return BasicResultVo.success();
+    }
+
+    /**
+     * 测试发送接口
+     */
+    @PostMapping("test")
+    @ApiOperation("/测试发送接口")
+    public BasicResultVo test(@RequestBody MessageTemplateParam messageTemplateParam) {
+        Map<String, String> variables = JSON.parseObject(messageTemplateParam.getMsgContent(), Map.class);
+        MessageParam messageParam = MessageParam.builder().receiver(messageTemplateParam.getReceiver()).variables(variables).build();
+        SendRequest sendRequest = SendRequest.builder().code(BusinessCode.COMMON_SEND.getCode()).messageTemplateId(messageTemplateParam.getId()).messageParam(messageParam).build();
+
+        SendResponse response = sendService.send(sendRequest);
+        if (!Objects.equals(response.getCode(), ResponseStatusEnum.SUCCESS.getCode())) {
+            return BasicResultVo.fail(response.getMsg());
+        }
+
+        return BasicResultVo.success(response);
     }
 }
