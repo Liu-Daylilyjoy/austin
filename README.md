@@ -15,6 +15,8 @@
   > https://blog.csdn.net/Kevinnsm/article/details/119768203
 - 在Apollo配置中心配置短信和邮件发送的账户名密码 
 [Apollo配置示例](images/Apollo/Apollo.md)
+- 配置xxl-job
+[xxl-job配置示例](images/xxl-job/xxl-job.md)
 
 目前使用的技术：
 - docker(容器技术，快速部署中间件)
@@ -39,6 +41,7 @@
 - logRecord(配置注解即可打印日志，非侵入式开发)
 - swagger(自动生成接口文档)
 - Graylog(轻量级ELK，日志聚合组件，统一记录不同程序、不同服务的日志)
+- XXL-JOB(分布式定时任务调度，用来设置一些消息的定时推送)
 
 目前能做的：
 - logback记录运行时日志
@@ -48,6 +51,7 @@
 - 可以统一配置项目中的去重参数
 - 单发、群发邮件
 - 在前端页面管理MessageTemplate
+- 分布式任务调度开发中
 
 业务解决方案：
 - 多个短信接口供应商解耦与多种消息发送方式解耦：
@@ -62,3 +66,5 @@
   > ```austin-handler``` 在发送消息前进行消息内容和发送渠道的比对，默认5分钟内同一用户收到的相同内容的消息不发送，默认一天内（24：00）每个用户最多只能收到某个渠道发送的5条消息，大于等于5条的消息进行去重，由于项目的定位是一个消息发送平台，因此不能与业务方耦合，所以使用***模板模式***在代码中***AbstractDeduplicationService***类中定义了一个抽象方法getDeduplicationKey用于业务方自行设计去重逻辑
 - 消息丢弃：
   > ```austin-handler``` 本可以在austin-api处实现丢弃逻辑，但是可能大部分时候消息是放在在MQ中的，所以丢弃功能在austin-handler中实现
+- 消息定时推送
+  > ```austin-corn```  消息业务有定时推送的需求，因此项目引入了XXL-JOB分布式定时任务框架，该框架支持注册多个执行器，这样就可以将某个任务交给某一台机器处理

@@ -59,8 +59,8 @@ public class MessageTemplateController {
      * 如果Id存在，则修改
      * 如果Id不存在，则保存
      */
-    @PostMapping("/save")
-    @ApiOperation("/插入MessageTemplate数据")
+    @PostMapping("save")
+    @ApiOperation("#保存MessageTemplate数据")
     public BasicResultVo saveOrUpdate(@RequestBody MessageTemplate messageTemplate) {
         MessageTemplate info = messageTemplateService.saveOrUpdate(messageTemplate);
 
@@ -70,8 +70,8 @@ public class MessageTemplateController {
     /**
      * 列表数据
      */
-    @GetMapping("/list")
-    @ApiOperation("/列表页")
+    @GetMapping("list")
+    @ApiOperation("#列表页")
     public BasicResultVo queryList(MessageTemplateParam messageTemplateParam) {
         List<Map<String, Object>> result = ConvertMap.flatList(messageTemplateService.queryList(messageTemplateParam), flatFieldName);
 
@@ -85,7 +85,7 @@ public class MessageTemplateController {
      * 根据id查找
      */
     @GetMapping("query/{id}")
-    @ApiOperation("/根据id查找")
+    @ApiOperation("#根据id查找")
     public BasicResultVo queryById(@PathVariable("id") Long id) {
         Map<String, Object> result = ConvertMap.flatSingle(messageTemplateService.queryById(id), flatFieldName);
 
@@ -96,7 +96,7 @@ public class MessageTemplateController {
      * 根据id复制
      */
     @PostMapping("copy/{id}")
-    @ApiOperation("/根据Id复制")
+    @ApiOperation("#根据Id复制")
     public BasicResultVo copyById(@PathVariable("id") Long id) {
         messageTemplateService.copy(id);
 
@@ -107,7 +107,7 @@ public class MessageTemplateController {
      * 根据id删除（软删除，将is_deleted字段置1）
      */
     @PostMapping("delete/{id}")
-    @ApiOperation("/根据Ids删除，id使用逗号分隔")
+    @ApiOperation("#根据Ids删除，id使用逗号分隔")
     public BasicResultVo deleteByIds(@PathVariable("id") String id) {
         if (StrUtil.isNotEmpty(id)) {
             List<Long> ids = Arrays.stream(id.split(StrUtil.COMMA)).map(s -> Long.valueOf(s)).collect(Collectors.toList());
@@ -123,7 +123,7 @@ public class MessageTemplateController {
      * 测试发送接口
      */
     @PostMapping("test")
-    @ApiOperation("/测试发送接口")
+    @ApiOperation("#测试发送接口")
     public BasicResultVo test(@RequestBody MessageTemplateParam messageTemplateParam) {
         Map<String, String> variables = JSON.parseObject(messageTemplateParam.getMsgContent(), Map.class);
         MessageParam messageParam = MessageParam.builder().receiver(messageTemplateParam.getReceiver()).variables(variables).build();
@@ -135,5 +135,23 @@ public class MessageTemplateController {
         }
 
         return BasicResultVo.success(response);
+    }
+
+    /**
+     * 启动模板的定时任务
+     */
+    @PostMapping("start/{id}")
+    @ApiOperation("#启动模板的定时任务")
+    public BasicResultVo start(@PathVariable("id") Long id) {
+        return messageTemplateService.startCronTask(id);
+    }
+
+    /**
+     * 启动模板的定时任务
+     */
+    @PostMapping("stop/{id}")
+    @ApiOperation("/暂停模板的定时任务")
+    public BasicResultVo stop(@PathVariable("id") Long id) {
+        return messageTemplateService.stopCronTask(id);
     }
 }

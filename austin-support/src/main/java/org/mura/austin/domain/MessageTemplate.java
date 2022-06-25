@@ -59,6 +59,18 @@ public class MessageTemplate implements Serializable {
     private Integer msgStatus;
 
     /**
+     * 定时任务Id(由xxl-job返回)
+     */
+    private Integer cronTaskId;
+
+    /**
+     * 定时发送的人群ID
+     * 1. 目前阶段直接填入Id测试
+     * 2. 正常是需要通过ID获取文件遍历每个Id
+     */
+    private String cronCrowdId;
+
+    /**
      * 发送的Id类型
      */
     private Integer idType;
@@ -104,9 +116,8 @@ public class MessageTemplate implements Serializable {
 
     /**
      * 修改者
-     * 这个单词拼错了，但我不敢改，我怕与数据库的字段冲突（数据库的字段也许也是错的）
      */
-    private String updator;
+    private String updater;
 
     /**
      * 审核者

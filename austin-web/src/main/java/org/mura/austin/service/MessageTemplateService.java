@@ -1,6 +1,7 @@
 package org.mura.austin.service;
 
 import org.mura.austin.domain.MessageTemplate;
+import org.mura.austin.vo.BasicResultVo;
 import org.mura.austin.vo.MessageTemplateParam;
 
 import java.util.List;
@@ -44,4 +45,14 @@ public interface MessageTemplateService {
      * 复制配置
      */
     void copy(Long id);
+
+    /**
+     * 启动模板的定时任务
+     */
+    BasicResultVo startCronTask(Long id);
+
+    /**
+     * 暂停模板的定时任务
+     */
+    BasicResultVo stopCronTask(Long id);
 }

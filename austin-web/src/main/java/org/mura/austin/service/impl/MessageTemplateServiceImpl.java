@@ -3,12 +3,19 @@ package org.mura.austin.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.mura.austin.constant.AustinConstant;
 import org.mura.austin.domain.MessageTemplate;
 import org.mura.austin.dao.MessageTemplateDao;
+import org.mura.austin.entity.XxlJobInfo;
 import org.mura.austin.enums.AuditStatus;
 import org.mura.austin.enums.MessageStatus;
+import org.mura.austin.enums.ResponseStatusEnum;
+import org.mura.austin.enums.TemplateType;
+import org.mura.austin.service.CronTaskService;
 import org.mura.austin.service.MessageTemplateService;
+import org.mura.austin.utils.XxlJobUtils;
+import org.mura.austin.vo.BasicResultVo;
 import org.mura.austin.vo.MessageTemplateParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +38,19 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
         this.messageTemplateDao = messageTemplateDao;
     }
 
+    private CronTaskService cronTaskService;
+
+    @Autowired
+    public void setCronTaskService(CronTaskService cronTaskService) {
+        this.cronTaskService = cronTaskService;
+    }
+
+    private XxlJobUtils xxlJobUtils;
+
+    @Autowired
+    public void setXxlJobUtils(XxlJobUtils xxlJobUtils) {
+        this.xxlJobUtils = xxlJobUtils;
+    }
 
     /**
      * 根据MessageTemplateParam定义的分页信息来返回关于MessageTemplate的List
@@ -54,7 +74,11 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     public MessageTemplate saveOrUpdate(MessageTemplate messageTemplate) {
         if (messageTemplate.getId() == null) {
             initStatus(messageTemplate);
+        } else {
+            resetStatus(messageTemplate);
         }
+
+        messageTemplate.setUpdated(Math.toIntExact(DateUtil.currentSeconds()));
 
         return messageTemplateDao.save(messageTemplate);
     }
@@ -80,10 +104,49 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     @Override
     public void copy(Long id) {
         MessageTemplate messageTemplate = messageTemplateDao.findById(id).get();
-        MessageTemplate clone = ObjectUtil.clone(messageTemplate);
-        clone.setId(null);
+        MessageTemplate clone = ObjectUtil.clone(messageTemplate).setId(null);
 
         messageTemplateDao.save(clone);
+    }
+
+    @Override
+    public BasicResultVo startCronTask(Long id) {
+        // 1.修改模板状态
+        MessageTemplate messageTemplate = messageTemplateDao.findById(id).get();
+
+        // 2.动态创建或更新定时任务并启动
+        XxlJobInfo xxlJobInfo = xxlJobUtils.buildXxlJobInfo(messageTemplate);
+
+        cronTaskService.saveCronTask(xxlJobInfo);
+
+        // 3.获取taskId(如果本身存在则复用原有任务，如果不存在则得到新建后的任务ID)
+        Integer taskId = messageTemplate.getCronTaskId();
+        BasicResultVo basicResultVo = cronTaskService.saveCronTask(xxlJobInfo);
+        if (taskId == null && ResponseStatusEnum.SUCCESS.getCode().equals(basicResultVo.getStatus()) && basicResultVo.getData() != null) {
+            taskId = Integer.valueOf(String.valueOf(basicResultVo.getData()));
+        }
+
+        // 4. 启动定时任务
+        if (taskId != null) {
+            cronTaskService.startCronTask(taskId);
+            MessageTemplate clone = ObjectUtil.clone(messageTemplate).setMsgStatus(MessageStatus.RUN.getCode()).setCronTaskId(taskId).setUpdated(Math.toIntExact(DateUtil.currentSeconds()));
+            messageTemplateDao.save(clone);
+
+            return BasicResultVo.success();
+        }
+
+        return BasicResultVo.fail();
+    }
+
+    @Override
+    public BasicResultVo stopCronTask(Long id) {
+        // 1.修改模板状态
+        MessageTemplate messageTemplate = messageTemplateDao.findById(id).get();
+        MessageTemplate clone = ObjectUtil.clone(messageTemplate).setMsgStatus(MessageStatus.STOP.getCode()).setUpdated(Math.toIntExact(DateUtil.currentSeconds()));
+        messageTemplateDao.save(clone);
+
+        // 2.暂停定时任务
+        return cronTaskService.stopCronTask(clone.getCronTaskId());
     }
 
     /**
@@ -92,9 +155,26 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     private void initStatus(MessageTemplate messageTemplate) {
         messageTemplate.setFlowId(StrUtil.EMPTY)
                 .setMsgStatus(MessageStatus.INIT.getCode()).setAuditStatus(AuditStatus.WAIT_AUDIT.getCode())
-                .setCreator("akutagawa murasame").setUpdator("akutagawa murasame").setTeam("mura").setAuditor("akutagawa murasame")
+                .setCreator("akutagawa murasame").setUpdater("akutagawa murasame").setTeam("mura").setAuditor("akutagawa murasame")
                 .setDeduplicationTime(AustinConstant.FALSE).setIsNightShield(AustinConstant.FALSE)
-                .setCreated(Math.toIntExact(DateUtil.currentSeconds())).setUpdated(Math.toIntExact(DateUtil.currentSeconds()))
+                .setCreated(Math.toIntExact(DateUtil.currentSeconds()))
                 .setIsDeleted(AustinConstant.FALSE);
+    }
+
+    /**
+     * 1. 重置模板的状态
+     * 2. 修改定时任务信息(如果存在)
+     */
+    private void resetStatus(MessageTemplate messageTemplate) {
+        messageTemplate.setUpdater(messageTemplate.getUpdater())
+                .setMsgStatus(MessageStatus.INIT.getCode()).setAuditStatus(AuditStatus.WAIT_AUDIT.getCode());
+
+        if (messageTemplate.getCronTaskId() != null && TemplateType.CLOCKING.getCode().equals(messageTemplate.getTemplateType())) {
+            XxlJobInfo xxlJobInfo = xxlJobUtils.buildXxlJobInfo(messageTemplate);
+            cronTaskService.saveCronTask(xxlJobInfo);
+
+//            修改了之后不会会将原来进行的任务停止
+            cronTaskService.stopCronTask(messageTemplate.getCronTaskId());
+        }
     }
 }

@@ -57,6 +57,12 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mura</groupId>
+            <artifactId>austin-cron</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
         <!--监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
