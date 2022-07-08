@@ -20,9 +20,9 @@ public class AustinConstant {
     /**
      * cron时间格式
      *
-     * ，秒 分 时 天 月 星期 年
+     * 秒 分 时 天 月 星期 年(yyyy年到yyyy年执行)
      */
-    public final static String CRON_FORMAT = "ss mm HH dd MM ? yyyy";
+    public final static String CRON_FORMAT = "ss mm HH dd MM ? yyyy-yyyy";
 
     /**
      * Apollo常量默认值，即当无法获取目标配置时的默认值

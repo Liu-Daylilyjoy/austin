@@ -1,10 +1,13 @@
 package org.mura.austin.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson.JSON;
 
+import com.google.common.base.Throwables;
+import com.xxl.job.core.biz.model.ReturnT;
 import lombok.extern.slf4j.Slf4j;
 import org.mura.austin.constants.XxlJobConstant;
 import org.mura.austin.entity.XxlJobGroup;
@@ -26,8 +29,8 @@ import java.util.Map;
  *
  * 设置定时任务的类
  */
-@Service
 @Slf4j
+@Service
 public class CronTaskServiceImpl implements CronTaskService {
     @Value("${xxl.job.admin.username}")
     private String xxlUserName;
@@ -37,114 +40,129 @@ public class CronTaskServiceImpl implements CronTaskService {
 
     @Value("${xxl.job.admin.addresses}")
     private String xxlAddresses;
-
+    
     @Override
     public BasicResultVo saveCronTask(XxlJobInfo xxlJobInfo) {
-//        将job信息转化成map,方便做成表单
         Map<String, Object> params = JSON.parseObject(JSON.toJSONString(xxlJobInfo), Map.class);
-
-//        根据信息中是否有id来判断是添加还是更新
         String path = xxlJobInfo.getId() == null ? xxlAddresses + XxlJobConstant.INSERT_URL
                 : xxlAddresses + XxlJobConstant.UPDATE_URL;
 
-        HttpResponse response = null;
+        HttpResponse response;
+        ReturnT returnT = null;
         try {
             response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+            returnT = JSON.parseObject(response.body(), ReturnT.class);
 
             // 插入时需要返回Id，而更新时不需要
-            if (path.contains(XxlJobConstant.INSERT_URL) && response.isOk()) {
+            if (response.isOk() && ReturnT.SUCCESS_CODE == returnT.getCode()) {
 //                从xxl-job的源码中可以看出,content字段返回的是插入字段后数据库中的taskId
-                Integer taskId = Integer.parseInt(String.valueOf(JSON.parseObject(response.body()).get("content")));
+                if (path.contains(XxlJobConstant.INSERT_URL)) {
+                    Integer taskId = Integer.parseInt(String.valueOf(returnT.getContent()));
 
-                return BasicResultVo.success(taskId);
-            } else if (response.isOk()) {
-                return BasicResultVo.success();
+                    return BasicResultVo.success(taskId);
+                } else if (path.contains(XxlJobConstant.UPDATE_URL)) {
+                    return BasicResultVo.success();
+                }
             }
         } catch (Exception e) {
-            log.error("CronTaskService#saveTask fail:{}", JSON.toJSONString(response.body()));
-
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+            log.error("CronTaskService#saveTask fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(xxlJobInfo), JSON.toJSONString(returnT));
         }
 
-        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(returnT));
     }
 
     @Override
     public BasicResultVo deleteCronTask(Integer taskId) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("id", taskId);
-
         String path = xxlAddresses + XxlJobConstant.DELETE_URL;
 
-        HttpResponse response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+        HashMap<String, Object> params = MapUtil.newHashMap();
+        params.put("id", taskId);
 
-        if (!response.isOk()) {
-            log.error("CronTaskService#deleteCronTask fail:{}", JSON.toJSONString(response.body()));
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+        HttpResponse response;
+        ReturnT returnT = null;
+        try {
+            response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+            returnT = JSON.parseObject(response.body(), ReturnT.class);
+
+            if (response.isOk() && ReturnT.SUCCESS_CODE == returnT.getCode()) {
+                return BasicResultVo.success();
+            }
+        } catch (Exception e) {
+            log.error("CronTaskService#deleteCronTask fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(returnT));
         }
 
-        return BasicResultVo.success();
+        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(returnT));
     }
 
     @Override
     public BasicResultVo startCronTask(Integer taskId) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("id", taskId);
-
         String path = xxlAddresses + XxlJobConstant.RUN_URL;
 
-        HttpResponse response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+        HashMap<String, Object> params = MapUtil.newHashMap();
+        params.put("id", taskId);
 
-        if (!response.isOk()) {
-            log.error("CronTaskService#startCronTask fail:{}", JSON.toJSONString(response.body()));
+        HttpResponse response;
+        ReturnT returnT = null;
+        try {
+            response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+            returnT = JSON.parseObject(response.body(), ReturnT.class);
 
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+            if (response.isOk() && ReturnT.SUCCESS_CODE == returnT.getCode()) {
+                return BasicResultVo.success();
+            }
+        } catch (Exception e) {
+            log.error("CronTaskService#startCronTask fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(returnT));
         }
 
-        return BasicResultVo.success();
+        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(returnT));
     }
 
     @Override
     public BasicResultVo stopCronTask(Integer taskId) {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("id", taskId);
-
         String path = xxlAddresses + XxlJobConstant.STOP_URL;
 
-        HttpResponse response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+        HashMap<String, Object> params = MapUtil.newHashMap();
+        params.put("id", taskId);
 
-        if (!response.isOk()) {
-            log.error("CronTaskService#stopCronTask fail:{}", JSON.toJSONString(response.body()));
+        HttpResponse response;
+        ReturnT returnT = null;
+        try {
+            response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+            returnT = JSON.parseObject(response.body(), ReturnT.class);
 
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+            if (response.isOk() && ReturnT.SUCCESS_CODE == returnT.getCode()) {
+                return BasicResultVo.success();
+            }
+        } catch (Exception e) {
+            log.error("CronTaskService#stopCronTask fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(returnT));
         }
 
-        return BasicResultVo.success();
+        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(returnT));
     }
 
     @Override
     public BasicResultVo getGroupId(String appName, String title) {
-//        获取所有的jobgroup
         String path = xxlAddresses + XxlJobConstant.JOB_GROUP_PAGE_LIST;
 
-        HashMap<String, Object> params = new HashMap<>();
+        HashMap<String, Object> params = MapUtil.newHashMap();
         params.put("appname", appName);
         params.put("title", title);
 
         HttpResponse response = null;
         try {
-//            不传appname和title时,返回的是所有的jobgroup
             response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
-
             Integer id = JSON.parseObject(response.body()).getJSONArray("data").getJSONObject(0).getInteger("id");
 
             if (response.isOk() && id != null) {
                 return BasicResultVo.success(id);
             }
         } catch (Exception e) {
-            log.error("CronTaskService#getGroupId fail:{}", JSON.toJSONString(response.body()));
-
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+            log.error("CronTaskService#getGroupId fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(response.body()));
         }
 
         return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
@@ -153,45 +171,53 @@ public class CronTaskServiceImpl implements CronTaskService {
     @Override
     public BasicResultVo createGroup(XxlJobGroup xxlJobGroup) {
         Map<String, Object> params = JSON.parseObject(JSON.toJSONString(xxlJobGroup), Map.class);
-
         String path = xxlAddresses + XxlJobConstant.JOB_GROUP_INSERT_URL;
 
-        HttpResponse response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+        HttpResponse response;
+        ReturnT returnT = null;
+        try {
+            response = HttpRequest.post(path).form(params).cookie(getCookie()).execute();
+            returnT = JSON.parseObject(response.body(), ReturnT.class);
 
-        if (!response.isOk()) {
-            log.error("CronTaskService#createGroup fail:{}", JSON.toJSONString(response.body()));
-
-            return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(response.body()));
+            if (response.isOk() && ReturnT.SUCCESS_CODE == returnT.getCode()) {
+                return BasicResultVo.success();
+            }
+        } catch (Exception e) {
+            log.error("CronTaskService#createGroup fail,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(returnT));
         }
 
-        return BasicResultVo.success();
+        return BasicResultVo.fail(ResponseStatusEnum.SERVICE_ERROR, JSON.toJSONString(returnT));
     }
 
     /**
      * 获取xxl cookie，由于定时任务调度管理需要登录，因此将登录信息存在cookie中
      */
     private String getCookie() {
-        Map<String, Object> hashMap = new HashMap<>(8);
-        hashMap.put("userName", xxlUserName);
-        hashMap.put("password", xxlPassword);
-        hashMap.put("randomCode", IdUtil.fastSimpleUUID());
+        Map<String, Object> params = MapUtil.newHashMap();
+        params.put("userName", xxlUserName);
+        params.put("password", xxlPassword);
+        params.put("randomCode", IdUtil.fastSimpleUUID());
 
         String path = xxlAddresses + XxlJobConstant.LOGIN_URL;
+        HttpResponse response = null;
+        try {
+            response = HttpRequest.post(path).form(params).execute();
 
-        HttpResponse response = HttpRequest.post(path).form(hashMap).execute();
+            if (response.isOk()) {
+                List<HttpCookie> cookies = response.getCookies();
+                StringBuilder sb = new StringBuilder();
 
-        if (response.isOk()) {
-            List<HttpCookie> cookies = response.getCookies();
+                for (HttpCookie cookie : cookies) {
+                    sb.append(cookie.toString());
+                }
 
-            StringBuilder sb = new StringBuilder();
-            for (HttpCookie cookie : cookies) {
-                sb.append(cookie.toString());
+                return sb.toString();
             }
-
-            return sb.toString();
+        } catch (Exception e) {
+            log.error("CronTaskService#createGroup getCookie,e:{},param:{},response:{}", Throwables.getStackTraceAsString(e)
+                    , JSON.toJSONString(params), JSON.toJSONString(response));
         }
-
-        log.error("CronTaskService#getCookie fail:{}", JSON.parseObject(response.body()));
 
         return null;
     }

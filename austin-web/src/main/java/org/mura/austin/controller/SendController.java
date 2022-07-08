@@ -41,7 +41,7 @@ public class SendController {
      *     }
      * }
      */
-    @ApiOperation(value = "下发接口", notes = "多渠道多类型下发消息，目前支持邮件和短信，类型支持：验证码、通知类、营销类")
+    @ApiOperation(value = "#下发接口", notes = "多渠道多类型下发消息，目前支持邮件和短信，类型支持：验证码、通知类、营销类")
     @PostMapping("/send")
     public SendResponse send(
             @ApiParam(

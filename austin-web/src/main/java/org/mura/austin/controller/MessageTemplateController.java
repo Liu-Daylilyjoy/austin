@@ -18,6 +18,7 @@ import org.mura.austin.vo.MessageTemplateParam;
 import org.mura.austin.vo.MessageTemplateVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -147,11 +148,20 @@ public class MessageTemplateController {
     }
 
     /**
-     * 启动模板的定时任务
+     * 暂停模板的定时任务
      */
     @PostMapping("stop/{id}")
-    @ApiOperation("/暂停模板的定时任务")
+    @ApiOperation("#暂停模板的定时任务")
     public BasicResultVo stop(@PathVariable("id") Long id) {
         return messageTemplateService.stopCronTask(id);
+    }
+
+    /**
+     * 上传人群文件
+     */
+    @PostMapping("upload")
+    @ApiOperation("#上传人群文件")
+    public BasicResultVo upload(@RequestParam("file") MultipartFile file) {
+        return BasicResultVo.success();
     }
 }
