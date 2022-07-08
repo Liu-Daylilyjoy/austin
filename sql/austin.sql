@@ -1,4 +1,4 @@
-drop database austin;
+drop database if exists austin;
 
 create database austin;
 
@@ -17,7 +17,7 @@ CREATE TABLE `message_template`
     `send_channel`       tinyint(4) NOT NULL DEFAULT '0' COMMENT '消息发送渠道：10.IM 20.Push 30.短信 40.Email 50.公众号 60.小程序',
     `template_type`      tinyint(4) NOT NULL DEFAULT '0' COMMENT '10.运营类 20.技术类接口调用',
     `msg_type`           tinyint(4) NOT NULL DEFAULT '0' COMMENT '10.通知类消息 20.营销类消息 30.验证码类消息',
-    `expect_push_time`   varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '期望发送时间：立即发送.10 定时任务以及周期任务.cron表达式',
+    `expect_push_time`   varchar(100) COLLATE utf8mb4_unicode_ci COMMENT '期望发送时间：0:立即发送 定时任务以及周期任务:cron表达式',
     `msg_content`        varchar(600) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '消息内容 占位符用{$var}表示',
     `send_account`       tinyint(4) NOT NULL DEFAULT '0' COMMENT '发送账号 一个渠道下可存在多个账号',
     `creator`            varchar(45) COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT '' COMMENT '创建者',
@@ -28,8 +28,6 @@ CREATE TABLE `message_template`
     `is_deleted`         tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否删除：0.不删除 1.删除',
     `created`            int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
     `updated`            int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-    `deduplication_time` tinyint(4) NOT NULL DEFAULT '0' COMMENT '去重时间 单位小时',
-    `is_night_shield`    tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否夜间屏蔽：0.夜间不屏蔽 1.夜间屏蔽',
     PRIMARY KEY (`id`),
     KEY                  `idx_channel` (`send_channel`)
 ) ENGINE = InnoDB
@@ -63,26 +61,26 @@ CREATE TABLE `sms_record`
 
 /*测试短信*/
 INSERT INTO austin.message_template (id, name, audit_status, msg_status, id_type, send_channel, template_type,
-                                     msg_type, expect_push_time, msg_content, send_account, creator, updater, auditor,
-                                     team, proposer, is_deleted, created, updated, deduplication_time, is_night_shield)
-VALUES (1, '测试短信', 10, 10, 30, 30, 10, 10, '0',
+                                     msg_type, msg_content, send_account, creator, updater, auditor,
+                                     team, proposer, is_deleted, created, updated)
+VALUES (1, '测试短信', 10, 10, 30, 30, 10, 10,
         '{"content":"{$content}"}', 10, 'mura_c', 'mura_u', 'mura_a', 'mura_t', 'mura_p',
-        0, 1636978066, 1636978066, 1, 0);
+        0, 1636978066, 1636978066);
 
 /*测试短信 + url链接追踪*/
 INSERT INTO austin.message_template (id, name, audit_status, msg_status, id_type, send_channel, template_type,
-                                     msg_type, expect_push_time, msg_content, send_account, creator, updater, auditor,
-                                     team, proposer, is_deleted, created, updated, deduplication_time, is_night_shield)
-VALUES (2, '测试短信(url链接追踪)', 10, 10, 30, 30, 10, 20, '0',
+                                     msg_type, msg_content, send_account, creator, updater, auditor,
+                                     team, proposer, is_deleted, created, updated)
+VALUES (2, '测试短信(url链接追踪)', 10, 10, 30, 30, 10, 20,
         '{"content":"{$content}","url":"https://gitee.com/JoyDayLily/austin"}',
         10, 'mura_c', 'mura_u', 'mura_a', 'mura_t', 'mura_p',
-        0, 1637411536, 1637411536, 1, 0);
+        0, 1637411536, 1637411536);
 
 /*测试邮件发送*/
 INSERT INTO austin.message_template (id, name, audit_status, msg_status, id_type, send_channel, template_type,
-                                     msg_type, expect_push_time, msg_content, send_account, creator, updater, auditor,
-                                     team, proposer, is_deleted, created, updated, deduplication_time, is_night_shield)
-VALUES (3, '测试邮件', 10, 10, 50, 40, 20, 10, '0',
+                                     msg_type, msg_content, send_account, creator, updater, auditor,
+                                     team, proposer, is_deleted, created, updated)
+VALUES (3, '测试邮件', 10, 10, 50, 40, 20, 10,
         '{"content":"{$content}","title":"{$title}"}', 10,
         'mura_c', 'mura_u', 'mura_a', 'mura_t', 'mura_p',
-        0, 1641546914, 1641546914, 1, 0);
+        0, 1641546914, 1641546914);
