@@ -29,7 +29,7 @@ public class CronTaskHandler {
      */
     @XxlJob("austinJob")
     public void execute() {
-        log.info("XXL-JOB, Hello World.");
+        log.info("CronTaskHandler#execute messageTemplateId:{} cron exec!", XxlJobHelper.getJobParam());
 
 //        从XxlJob内置的上下文中获取messageTemplateId，JobParam就是我们在调用CronTaskService时设置的executorParam
         Long messageTemplateId = Long.valueOf(XxlJobHelper.getJobParam());

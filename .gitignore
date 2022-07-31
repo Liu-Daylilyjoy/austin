@@ -4,3 +4,4 @@ target/
 
 !austin-service-api/
 logs
+austin-cron/src/main/resources/crowd_sms.csv
